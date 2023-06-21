@@ -19,6 +19,26 @@ body {
     width: 250px;
 }
 
+#sidebar #content {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+#sidebar:hover #content {
+    opacity: 1;
+}
+
+#sidebar #arrow {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    transition: transform 0.5s;
+}
+
+#sidebar:hover #arrow {
+    transform: rotate(90deg);
+}
+
 #main {
     margin-left: 250px;
     padding: 20px;
