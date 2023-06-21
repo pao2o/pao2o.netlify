@@ -31,7 +31,7 @@ body {
 #sidebar #arrow {
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 50%;
     transition: transform 0.5s;
 }
 
