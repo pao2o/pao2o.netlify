@@ -33,6 +33,7 @@ body {
         text-decoration: none;
         display: block;
         padding: 10px 0;
+        padding-left: 10px;
     }
 
         #sidebar #content a:hover {
