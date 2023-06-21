@@ -32,11 +32,12 @@ body {
     position: absolute;
     right: 10px;
     top: 50%;
+    transform: translateY(-50%);
     transition: transform 0.5s;
 }
 
 #sidebar:hover #arrow {
-    transform: rotate(180deg);
+    transform: rotate(180deg) translateY(-50%);
 }
 
 #main {
