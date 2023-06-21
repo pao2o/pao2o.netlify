@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: courier, monoscape;
+    font-family: coureier, monoscope;
 }
 
 #sidebar {
@@ -14,39 +14,42 @@ body {
     padding: 20px;
     color: #fff;
 }
-#sidebar:hover {
-    width: 250px;
-}
 
-#sidebar #content {
-    opacity: 0;
-    transition: opacity 0.5s;
-}
+    #sidebar:hover {
+        width: 250px;
+    }
 
-#sidebar:hover #content {
-    opacity: 1;
-}
+    #sidebar #content {
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
 
-#sidebar #content a {
-    color: #fff;
-    text-decoration: none;
-}
+    #sidebar:hover #content {
+        opacity: 1;
+    }
 
-#sidebar #content a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
+    #sidebar #content a {
+        color: #fff;
+        text-decoration: none;
+        display: block;
+        padding: 10px 0;
+    }
 
-#sidebar #arrow {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 0.5s;
-}
+        #sidebar #content a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
 
-#sidebar:hover #arrow {
-    transform: rotate(90deg) translateY(-50%);
-}
+    #sidebar #arrow {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform 0.5s;
+    }
+
+    #sidebar:hover #arrow {
+        transform: rotate(90deg) translateY(-50%);
+    }
 
 #main {
     margin-left: 250px;
