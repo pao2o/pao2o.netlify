@@ -15,19 +15,23 @@
             <a href="#about"><h2>about me</h2></a>
         </div>
     </div>
-    <div id="main">
-        <section id="about">
-            <h2>About Me</h2>
-            <p>Some information about me.</p>
-        </section>
-        <section id="skills">
-            <h2>Skills</h2>
-            <p>My skills.</p>
-        </section>
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>My contact information.</p>
-        </section>
+    <div id="intro">
+        <div id="brief">
+            <h1>Welcome to My Website!</h1>
+            <p>This is a brief introduction about myself. I'm a professional with skills in...</p>
+        </div>
+        <div id="contact">
+            <p>Please fill out the form below to get in touch.</p>
+            <form id="contact-form">
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name"><br>
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email"><br>
+                <label for="description">Description:</label><br>
+                <textarea id="description" name="description"></textarea><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

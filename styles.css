@@ -2,6 +2,15 @@ body {
     margin: 0;
     padding: 0;
     font-family: courier, monoscope;
+    background-color: #181a1b
+}
+
+h1, h2 {
+    color: #f3f3f3; /* Replace with your desired color value */
+}
+
+p {
+    color: #c8c3bc;
 }
 
 #sidebar {
@@ -57,6 +66,48 @@ body {
     }
 
 #main {
-    margin-left: 250px;
+    margin-left: 300px;
     padding: 20px;
+
 }
+
+#intro {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    margin-left: 300px;
+}
+
+#brief, #contact {
+    width: 45%;
+}
+
+#contact-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+    #contact-form label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    #contact-form input, #contact-form textarea {
+        width: 97%;
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+        #contact-form input[type="submit"] {
+            cursor: pointer;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+        }
