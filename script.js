@@ -12,7 +12,7 @@ function handleSectionClick(event) {
 
             targetSection.style.visibility = "visible";
             targetSection.classList.add("fade-in");
-        }, 2000); // Adjust the delay (in milliseconds) as needed
+        }, 500); // Adjust the delay (in milliseconds) as needed
     }
 }
 
