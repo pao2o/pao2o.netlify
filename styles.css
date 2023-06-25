@@ -1,37 +1,48 @@
+
+
 body {
     margin: 0;
     padding: 0;
-    font-family: courier, monoscope;
-    background-color: #181a1b
+    font-family: courier, monoscope !important;
+    background-color: #202325
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 h1, h2 {
     color: #f3f3f3; /* Replace with your desired color value */
 }
 
-p {
-    color: #c8c3bc;
+label, p {
+    color: #d8d4cf;
 }
 
 #sidebar {
     position: fixed;
     width: 0;
     height: 100%;
-    background-color: #333;
+    background-color: #181a1b;
     overflow-x: hidden;
     transition: 0.5s;
-    padding: 20px;
-    color: #fff;
+    padding: 16px;
+    color: #f3f3f3;
+    z-index: 1;
 }
 
     #sidebar:hover {
-        width: 250px;
+        width: 275px;
     }
 
     #sidebar #content {
         opacity: 0;
         transition: opacity 0.5s;
-        margin-right: 30px;
+        margin-right: 20px;
+        transform: translateX(-10px);
     }
 
     #sidebar:hover #content {
@@ -39,16 +50,21 @@ p {
     }
 
     #sidebar #content a {
-        color: #fff;
+        color: #f3f3f3;
         text-decoration: none;
-        display: block;
-        padding: 10px 0;
-        padding-left: 10px;
+        display: flex; /* Add this line */
+        align-items: center; /* Add this line */
         transition: border 0.3s;
     }
+        #sidebar #content a i {
+            margin-right: 20px; /* Add this line for the desired spacing */
+            margin-left: 20px;
+        }
+
 
         #sidebar #content a:hover {
             background-color: rgba(255, 255, 255, 0.1);
+            width: 110%;
             border-left: 5px solid white;
         }
 
@@ -76,20 +92,31 @@ p {
     justify-content: space-between;
     width: 80%;
     padding: 20px;
-    background-color: #fff;
+    background-color: #181a1b;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-    margin-left: 300px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-left: calc(310px + 36px);
+    margin-right: 35px;
+    max-height: calc(93vh - 2 * 20px);
+    overflow: auto;
+    border: 2px solid #5f5137;
+    opacity: 1;
+    transition: opacity 0.5s;
 }
+
+
+
 
 #brief, #contact {
     width: 45%;
 }
 
 #contact-form {
-    background-color: #f9f9f9;
+    background-color: #1b1e1f;
     padding: 20px;
     border-radius: 5px;
+    font-family: courier, monoscope;
+    margin-bottom: 600px;
 }
 
     #contact-form label {
@@ -98,16 +125,67 @@ p {
     }
 
     #contact-form input, #contact-form textarea {
-        width: 97%;
+        width: 100%;
         margin-bottom: 20px;
         padding: 10px;
         border-radius: 5px;
-        border: 1px solid #ccc;
+        border: 1px solid rgb(62, 68, 70);
+        color: #d8d4cf;
+        font-family: courier, monoscope;
+        background-color: #454a4d;
+        box-sizing: border-box;
     }
 
         #contact-form input[type="submit"] {
             cursor: pointer;
-            background-color: #007BFF;
-            color: #fff;
+            background-color: #5f5137;
+            color: #d8d4cf;
+            font-family: courier, monoscope;
             border: none;
+            width: 100%;
         }
+
+        #contact-form textarea#description {
+            resize: vertical;
+            height: 235px;
+        }
+
+
+.section-box {
+    position: fixed;
+    top: 50%;
+    left: 66px; /* Adjusted the margin-left to left */
+    transform: translateY(-50%);
+    width: calc(250px - 2 * 20px); /* Account for the padding */
+    height: calc(93vh - 2 * 20px); /* Same height as the visualization box */
+    background-color: #181a1b; /* Same background color as the visualization box */
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* Add padding to the contents */
+    border: 2px solid #5f5137; /* Add border with white color */
+}
+
+
+
+#visualization-box {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    height: 93vh; /* 80% of the viewport height */
+    background-color: #181a1b;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    margin-left: calc(310px + 36px); /* Adjust the margin as desired */
+    margin-right: 35px; /* Adjust the margin as desired */
+    border: 2px solid #5f5137; /* Add border with white color */
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.fade-in {
+    opacity: 1;
+    transition: opacity 0.5s;
+}

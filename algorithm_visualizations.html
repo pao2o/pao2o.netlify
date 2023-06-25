@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Personal Resume</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+</head>
+<body>
+    <div id="sidebar">
+        <div id="arrow">&#9654;</div>
+        <div id="content">
+            <a href="index.html" class="item" onclick="handleSectionClick(event)"><i class="fas fa-home"></i><h2>home</h2></a>
+            <a href="algorithm_visualizations.html" class="item" onclick="handleSectionClick(event)"><i class="fas fa-chart-bar"></i><h2>algorithm visualizations</h2></a>
+            <a href="#scripts" class="item" onclick="handleSectionClick(event)"><i class="fas fa-code"></i><h2>scripts & programs</h2></a>
+            <a href="#formulas" class="item" onclick="handleSectionClick(event)"><i class="fas fa-calculator"></i><h2>formulas & functions</h2></a>
+            <a href="#about" class="item" onclick="handleSectionClick(event)"><i class="fas fa-user"></i><h2>about me</h2></a>
+        </div>
+    </div>
+
+    <div class="section-box">
+        <a href="#letf-backtest" class="item"><h2>LETF Backtest</h2></a>
+        <a href="#jaro-winkler" class="item"><h2>Jaro-Winkler</h2></a>
+    </div>
+
+    <div id="container">
+        <div id="visualization-box">
+            <h2>Algorithm Visualizations Content</h2>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

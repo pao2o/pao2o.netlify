@@ -3,36 +3,45 @@
 <head>
     <title>Personal Resume</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 <body>
     <div id="sidebar">
         <div id="arrow">&#9654;</div>
         <div id="content">
-            <a href="#home"><h2>home</h2></a>
-            <a href="#visualization"><h2>algorithm visualizations</h2></a>
-            <a href="#scripts"><h2>scripts & programs</h2></a>
-            <a href="#formulas"><h2>formulas & functions</h2></a>
-            <a href="#about"><h2>about me</h2></a>
+            <a href="index.html" class="item" onclick="handleSectionClick(event)"><i class="fas fa-home"></i><h2>home</h2></a>
+            <a href="algorithm_visualizations.html" class="item" onclick="handleSectionClick(event)"><i class="fas fa-chart-bar"></i><h2>algorithm visualizations</h2></a>
+            <a href="#scripts" class="item" onclick="handleSectionClick(event)"><i class="fas fa-code"></i><h2>scripts & programs</h2></a>
+            <a href="#formulas" class="item" onclick="handleSectionClick(event)"><i class="fas fa-calculator"></i><h2>formulas & functions</h2></a>
+            <a href="#about" class="item" onclick="handleSectionClick(event)"><i class="fas fa-user"></i><h2>about me</h2></a>
         </div>
     </div>
-    <div id="intro">
-        <div id="brief">
-            <h1>Welcome to My Website!</h1>
-            <p>This is a brief introduction about myself. I'm a professional with skills in...</p>
-        </div>
-        <div id="contact">
-            <p>Please fill out the form below to get in touch.</p>
-            <form id="contact-form">
-                <label for="name">Name:</label><br>
-                <input type="text" id="name" name="name"><br>
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email"><br>
-                <label for="description">Description:</label><br>
-                <textarea id="description" name="description"></textarea><br>
-                <input type="submit" value="Submit">
-            </form>
+
+    <div id="container">
+        <div id="intro">
+            <div id="brief" class="fade-in">
+                <h1>Paolo Reyes</h1>
+                <p>data analysis, software development, algorithm optimization</p>
+            </div>
+            <div id="contact" class="fade-in">
+                <h1>Please fill out the form below to get in touch.</h1>
+                <form id="contact-form">
+                    <label for="name">Name:</label><br>
+                    <input type="text" id="name" name="name"><br>
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email"><br>
+                    <label for="subject">Subject:</label><br>
+                    <input type="text" id="subject" name="subject"><br>
+                    <label for="description">Description:</label><br>
+                    <textarea id="description" name="description"></textarea><br>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
     </div>
+
+
     <script src="script.js"></script>
 </body>
 </html>
