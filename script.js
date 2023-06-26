@@ -1,4 +1,4 @@
-function handleSectionClick(event) {
+function handleSidebarSectionClick(event) {
     const targetSection = document.querySelector(event.target.getAttribute("href"));
     const currentSection = document.querySelector("#container .fade-in");
     
@@ -12,7 +12,7 @@ function handleSectionClick(event) {
 
             targetSection.style.visibility = "visible";
             targetSection.classList.add("fade-in");
-        }, 3000); // Adjust the delay (in milliseconds) as needed
+        }, 1000); // Adjust the delay (in milliseconds) as needed
     }
 }
 

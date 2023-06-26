@@ -1,10 +1,35 @@
-
+:root {
+    --main-color: #f3f3f3;
+    --secondary-color: #d8d4cf;
+    --background-color: #181a1b;
+    --highlight-color: #5f5137;
+}
 
 body {
+    position: relative;
     margin: 0;
     padding: 0;
-    font-family: courier, monoscope !important;
-    background-color: #202325
+    font-family: courier, monoscope;
+    background-color: var(--background-color);
+}
+
+body, #contact-form, #contact-form input, #contact-form textarea, #contact-form input[type="submit"] {
+    font-family: courier, monoscope;
+}
+  
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background-image: url('background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(20px);
+    -webkit-filter: blur(20px);
 }
 
 #container {
@@ -12,79 +37,78 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    opacity: 0.95;
 }
 
-h1, h2 {
-    color: #f3f3f3; /* Replace with your desired color value */
+h1, h2, #sidebar, #sidebar #content a, .section-box a {
+    color: var(--main-color);
 }
 
-label, p {
-    color: #d8d4cf;
+label, p, #contact-form input, #contact-form textarea {
+    color: var(--secondary-color);
 }
 
 #sidebar {
     position: fixed;
     width: 0;
     height: 100%;
-    background-color: #181a1b;
+    background-color: var(--background-color);
     overflow-x: hidden;
     transition: 0.5s;
     padding: 16px;
-    color: #f3f3f3;
-    z-index: 1;
+    color: var(--main-color);
+    z-index: 999;
 }
 
-    #sidebar:hover {
-        width: 275px;
-    }
+#sidebar:hover {
+    width: 275px;
+}
 
-    #sidebar #content {
-        opacity: 0;
-        transition: opacity 0.5s;
-        margin-right: 20px;
-        transform: translateX(-10px);
-    }
+#sidebar #content {
+    opacity: 0;
+    transition: opacity 0.5s;
+    margin-right: 20px;
+    transform: translateX(-10px);
+}
 
-    #sidebar:hover #content {
-        opacity: 1;
-    }
+#sidebar:hover #content {
+    opacity: 1;
+}
 
-    #sidebar #content a {
-        color: #f3f3f3;
-        text-decoration: none;
-        display: flex; /* Add this line */
-        align-items: center; /* Add this line */
-        transition: border 0.3s;
-    }
-        #sidebar #content a i {
-            margin-right: 20px; /* Add this line for the desired spacing */
-            margin-left: 20px;
-        }
+#sidebar #content a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: border 0.3s;
+}
 
+#sidebar #content a i {
+    margin-right: 20px;
+    margin-left: 20px;
+}
 
-        #sidebar #content a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            width: 110%;
-            border-left: 5px solid white;
-        }
+#sidebar #content a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 110%;
+    border-left: 5px solid var(--highlight-color);
+}
 
-    #sidebar #arrow {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        transition: transform 0.5s;
-    }
+#sidebar #arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.5s;
+}
 
-    #sidebar:hover #arrow {
-        transform: rotate(180deg) translateY(-50%);
-        right: 10px;
-    }
+#sidebar:hover #arrow {
+    transform: rotate(180deg) translateY(-50%);
+    right: 10px;
+}
 
 #main {
     margin-left: 300px;
     padding: 20px;
-
 }
 
 #intro {
@@ -92,17 +116,15 @@ label, p {
     justify-content: space-between;
     width: 80%;
     padding: 20px;
-    background-color: #181a1b;
+    background-color: var(--background-color);
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     margin-left: calc(310px + 36px);
     margin-right: 35px;
     max-height: calc(93vh - 2 * 20px);
     overflow: auto;
-    border: 2px solid #5f5137;
+    border: 2px solid var(--highlight-color);
 }
-
-
 
 
 #brief, #contact {
@@ -113,77 +135,80 @@ label, p {
     background-color: #1b1e1f;
     padding: 20px;
     border-radius: 5px;
-    font-family: courier, monoscope;
     margin-bottom: 600px;
 }
 
-    #contact-form label {
-        display: block;
-        margin-bottom: 10px;
-    }
+#contact-form label {
+    display: block;
+    margin-bottom: 10px;
+}
 
-    #contact-form input, #contact-form textarea {
-        width: 100%;
-        margin-bottom: 20px;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid rgb(62, 68, 70);
-        color: #d8d4cf;
-        font-family: courier, monoscope;
-        background-color: #454a4d;
-        box-sizing: border-box;
-    }
+#contact-form input, #contact-form textarea {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid rgb(62, 68, 70);
+    background-color: #454a4d;
+    box-sizing: border-box;
+}
 
-        #contact-form input[type="submit"] {
-            cursor: pointer;
-            background-color: #5f5137;
-            color: #d8d4cf;
-            font-family: courier, monoscope;
-            border: none;
-            width: 100%;
-        }
+#contact-form input[type="submit"] {
+    cursor: pointer;
+    background-color: var(--highlight-color);
+    border: none;
+    width: 100%;
+}
 
-        #contact-form textarea#description {
-            resize: vertical;
-            height: 235px;
-        }
-
+#contact-form textarea#description {
+    resize: vertical;
+    height: 205px;
+}
 
 .section-box {
     position: fixed;
-    top: 50%;
-    left: 66px; /* Adjusted the margin-left to left */
-    transform: translateY(-50%);
-    width: calc(250px - 2 * 20px); /* Account for the padding */
-    height: calc(93vh - 2 * 20px); /* Same height as the visualization box */
-    background-color: #181a1b; /* Same background color as the visualization box */
+    top: calc(50% - (93vh / 2));
+    left: 50px;
+    width: calc(250px - 2 * 20px);
+    height: calc(93vh - 2 * 20px);
+    background-color: var(--background-color);
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px; /* Add padding to the contents */
-    border: 2px solid #5f5137; /* Add border with white color */
+    padding: 20px;
+    border: 2px solid var(--highlight-color);
+    transition: background-color 0.3s;
+    z-index:2
 }
 
-
+.section-box a p:hover {
+    background-color: var(--highlight-color);
+}
 
 #visualization-box {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch; /* Change this line */
     width: 80%;
-    height: 93vh; /* 80% of the viewport height */
-    background-color: #181a1b;
+    height: calc(93vh - 2 * 20px);
+    background-color: var(--background-color);
     border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-    margin-left: calc(310px + 36px); /* Adjust the margin as desired */
-    margin-right: 35px; /* Adjust the margin as desired */
-    border: 2px solid #5f5137; /* Add border with white color */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-left: calc(310px + 36px);
+    margin-right: 35px;
+    border: 2px solid var(--highlight-color);
+    padding: 20px;
+    overflow: auto;
 }
 
-.fade-out {
-    opacity: 0;
-    transition: opacity 3s;
+
+#visualization-box h2 {
+    margin-bottom: 10h;
 }
 
-.fade-in {
-    opacity: 1;
-    transition: opacity 3s;
+.section-box a p.active {
+    background-color: var(--highlight-color);
 }
+
+
+
