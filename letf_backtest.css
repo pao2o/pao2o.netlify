@@ -1,27 +1,22 @@
 .input-container {
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
 }
 
 
-.input-container .left-inputs {
+.input-container .left-inputs,
+.input-container .right-inputs {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding-right: 20px;
 }
-
-.input-container .right-inputs {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
   
 
 .left-inputs input,
 .right-inputs input {
-    width: 150px;
+    width: 100%;
     margin-bottom: 5px;
     border-radius: 5px;
     border: 1px solid rgb(62, 68, 70);
@@ -30,6 +25,35 @@
     color: var(--secondary-color); /* color from your contact form input */
     font-family: courier, monoscope; /* font-family from your contact form input */
     height: 20px; /* adjust this value as needed */
+}
+
+.input-group {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Add this line */
+  box-sizing: border-box; /* Add this line */
+}
+
+.input-group .input-label {
+  font-weight: bold;
+  color: var(--main-color);
+  margin-bottom: 20px;
+}
+
+.input-group .input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.input-container .expanded {
+  display: block;
 }
 
 

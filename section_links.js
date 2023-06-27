@@ -25,64 +25,83 @@ function handleSectionClick(event) {
 }
 
 function letfBacktest() {
-    var leftLabels = [
-        "Period length", "Period CAGR", "Period Volatility", "3M Treasury avg",
-        "Adjusted CAGR", "Adjusted Volatility", "Adjusted 3M Treasury avg",
-        "LETF CAGR", "LETF Volatility"
+    const inputGroups = [
+      {
+        title: "Set Dates",
+        labels: ["Start Date", "End Date"]
+      },
+      {
+        title: "Make Adjustments",
+        labels: ["Add to CAGR", "Adjusted vol / Actual vol", "Add to 3M Treasury"]
+      },
+      {
+        title: "Set Leverage",
+        labels: ["Daily Leverage", "LETF expense ratio"]
+      },
+      {
+        title: "Actual Period Characteristics",
+        labels: ["Period length", "Period CAGR", "Period Volatility", "3M Treasury avg"]
+      },
+      {
+        title: "Adjusted Period Characteristics",
+        labels: ["Adjusted CAGR", "Adjusted Volatility", "Adjusted 3M Treasury avg"]
+      },
+      {
+        title: "LETF Results",
+        labels: ["LETF CAGR", "LETF Volatility"]
+      },
+      {
+        title: "Helpers",
+        labels: ["", "", "", ""]
+      }
     ];
-    var rightLabels = [
-        "Start Date", "End Date", "Add to CAGR", "Adjusted vol / Actual vol",
-        "Add to 3M Treasury", "Daily Leverage", "LETF expense ratio", "Helpers", 
-        "helpers_extra", "helpers_extra", "helpers_extra"
-    ];
+  
     const createInput = (label, name) => {
-        let input = '';
-        if (label !== "helpers_extra") {
-          input += `<label>${label}:</label><br>`;
-        }
-        if (label === "Add to CAGR") {
-          input += `<input type="text" name="${name}" pattern="\\d+(\\.\\d+)?(%|%)?" title="Enter a percentage value (e.g., 10%)" required oninput="formatPercentage(event)" value="0.00%"><br>`;
-        } else if (label === "Start Date") {
-          input += `<input type="date" name="${name}" value="1928-01-03"><br>`;
-        } else if (label === "Add to 3M Treasury") {
-          input += `<input type="text" name="${name}" value="0.00%"><br>`;
-        } else if (label === "LETF expense ratio") {
-          input += `<input type="text" name="${name}" pattern="\\d+(\\.\\d+)?(%|%)?" title="Enter a percentage value (e.g., 10%)" required oninput="formatPercentage(event)" value="0.91%"><br>`;
-        } else if (label === "Adjusted vol / Actual vol") {
-          input += `<input type="text" name="${name}" value="1"><br>`;
-        } else if (label === "Daily Leverage") {
-          input += `<input type="text" name="${name}" value="3"><br>`;
-        } else {
-          input += `<input type="text" name="${name}"><br>`;
-        }
-        return input;
-      };
-      
-    const createInputs = (labels) => {
-        let inputs = '';
-        labels.forEach(label => {
-            const name = label.replace(/ /g, '_').toLowerCase();
-            inputs += createInput(label, name);
-        });
-        return inputs;
+      return label ? `<label>${label}:</label><input type="text" name="${name}"><br>` : `<input type="text" name="${name}"><br>`;
     };
-
-    const content = `
-        <div style="display: flex; flex-direction: column;">
-            <h2>LETF Backtest</h2>
-            <div class="input-container">
-                <div class="left-inputs">
-                    ${createInputs(leftLabels)}
-                </div>
-                <div class="right-inputs">
-                    ${createInputs(rightLabels)}
-                </div>
-            </div>
+  
+    const createInputs = (labels) => {
+      return labels.map(label => {
+        const name = label.replace(/ /g, '_').toLowerCase();
+        return createInput(label, name);
+      }).join('');
+    };
+  
+    const createFormGroup = (groupTitle, groupLabels) => {
+      const groupInputs = createInputs(groupLabels);
+  
+      return `
+        <div class="input-group">
+          <div class="input-label">${groupTitle}</div>
+          <div class="input-container">
+            ${groupInputs}
+          </div>
         </div>
-    `;
-
-    return content;
-}
+      `;
+    };
+  
+    const createFormContent = () => {
+      const leftGroups = inputGroups.slice(3).map(group => createFormGroup(group.title, group.labels)).join('');
+      const rightGroups = inputGroups.slice(0, 3).map(group => createFormGroup(group.title, group.labels)).join('');
+  
+      return `
+        <div style="display: flex; flex-direction: column;">
+          <h2>LETF Backtest</h2>
+          <div class="input-container">
+            <div class="left-inputs">
+              ${leftGroups}
+            </div>
+            <div class="right-inputs">
+              ${rightGroups}
+            </div>
+          </div>
+        </div>
+      `;
+    };
+  
+    return createFormContent();
+  }
+  
 
 function formatPercentage(event) {
     const input = event.target;

@@ -9,12 +9,12 @@ body {
     position: relative;
     margin: 0;
     padding: 0;
-    font-family: courier, monoscope;
+    font-family: calibri, monoscope;
     background-color: var(--background-color);
 }
 
 body, #contact-form, #contact-form input, #contact-form textarea, #contact-form input[type="submit"] {
-    font-family: courier, monoscope;
+    font-family: calibri, monoscope;
 }
   
 body::before {
@@ -36,7 +36,7 @@ body::before {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
     opacity: 0.95;
 }
 
@@ -185,9 +185,7 @@ label, p, #contact-form input, #contact-form textarea {
 }
 
 #visualization-box {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+
     align-items: stretch; /* Change this line */
     width: 80%;
     height: calc(93vh - 2 * 20px);
