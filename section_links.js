@@ -57,8 +57,16 @@ function letfBacktest() {
     ];
   
     const createInput = (label, name) => {
-      return label ? `<label>${label}:</label><input type="text" name="${name}"><br>` : `<input type="text" name="${name}"><br>`;
+      if (label === "Start Date" || label === "End Date") {
+        return `
+          <label>${label}:</label>
+          <input type="date" name="${name}"><br>
+        `;
+      } else {
+        return label ? `<label>${label}:</label><input type="text" name="${name}"><br>` : `<input type="text" name="${name}"><br>`;
+      }
     };
+    
   
     const createInputs = (labels) => {
       return labels.map(label => {
@@ -69,10 +77,13 @@ function letfBacktest() {
   
     const createFormGroup = (groupTitle, groupLabels) => {
       const groupInputs = createInputs(groupLabels);
-  
+    
       return `
         <div class="input-group">
-          <div class="input-label">${groupTitle}</div>
+          <div class="input-label" onclick="toggleInputContainer(this)">
+            <span class="indicator">▼</span>
+            ${groupTitle}
+          </div>
           <div class="input-container">
             ${groupInputs}
           </div>
@@ -85,7 +96,6 @@ function letfBacktest() {
       const rightGroups = inputGroups.slice(0, 3).map(group => createFormGroup(group.title, group.labels)).join('');
   
       return `
-        <div style="display: flex; flex-direction: column;">
           <h2>LETF Backtest</h2>
           <div class="input-container">
             <div class="left-inputs">
@@ -95,13 +105,14 @@ function letfBacktest() {
               ${rightGroups}
             </div>
           </div>
-        </div>
       `;
     };
   
     return createFormContent();
   }
+
   
+//HELPER FUNCTIONS//
 
 function formatPercentage(event) {
     const input = event.target;
@@ -117,11 +128,6 @@ function formatPercentage(event) {
     }
 }
 
-
-
-
-
-
 function highlightActiveLink() {
     var sectionLinks = document.querySelectorAll('.section-box a p');
 
@@ -136,6 +142,13 @@ function highlightActiveLink() {
             event.target.classList.add('active');
         });
     });
+}
+
+function toggleInputContainer(label) {
+  const inputContainer = label.nextElementSibling;
+  const indicator = label.querySelector('.indicator');
+  inputContainer.classList.toggle("collapsed");
+  indicator.textContent = inputContainer.classList.contains('collapsed') ? '▼' : '▲';
 }
 
 highlightActiveLink();

@@ -9,12 +9,12 @@ body {
     position: relative;
     margin: 0;
     padding: 0;
-    font-family: calibri, monoscope;
+    font-family: sans-serif;
     background-color: var(--background-color);
 }
 
 body, #contact-form, #contact-form input, #contact-form textarea, #contact-form input[type="submit"] {
-    font-family: calibri, monoscope;
+    font-family: sans-serif;
 }
   
 body::before {
@@ -33,7 +33,7 @@ body::before {
 }
 
 #container {
-    display: flex;
+    overflow: hidden;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -164,49 +164,4 @@ label, p, #contact-form input, #contact-form textarea {
     resize: vertical;
     height: 205px;
 }
-
-.section-box {
-    position: fixed;
-    top: calc(50% - (93vh / 2));
-    left: 50px;
-    width: calc(250px - 2 * 20px);
-    height: calc(93vh - 2 * 20px);
-    background-color: var(--background-color);
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    border: 2px solid var(--highlight-color);
-    transition: background-color 0.3s;
-    z-index:2
-}
-
-.section-box a p:hover {
-    background-color: var(--highlight-color);
-}
-
-#visualization-box {
-
-    align-items: stretch; /* Change this line */
-    width: 80%;
-    height: calc(93vh - 2 * 20px);
-    background-color: var(--background-color);
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    margin-left: calc(310px + 36px);
-    margin-right: 35px;
-    border: 2px solid var(--highlight-color);
-    padding: 20px;
-    overflow: auto;
-}
-
-
-#visualization-box h2 {
-    margin-bottom: 10h;
-}
-
-.section-box a p.active {
-    background-color: var(--highlight-color);
-}
-
-
 
