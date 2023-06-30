@@ -65,8 +65,7 @@
   position: fixed;
   top: calc(50% - (93vh / 2));
   align-items: stretch;
-  width: 70%;
-  max-width: 100%;
+  width: calc(100vw - (310px + 36px + 35px + 2 * 20px));
   height: calc(93vh - 2 * 20px);
   background-color: var(--background-color);
   border-radius: 10px;
@@ -75,8 +74,6 @@
   margin-right: 35px;
   border: 2px solid var(--highlight-color);
   padding: 20px;
-  overflow: hidden;
-
 }
 
 

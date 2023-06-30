@@ -32,14 +32,6 @@ body::before {
     -webkit-filter: blur(20px);
 }
 
-#container {
-    overflow: hidden;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    opacity: 0.95;
-}
-
 h1, h2, #sidebar, #sidebar #content a, .section-box a {
     color: var(--main-color);
 }
@@ -110,22 +102,22 @@ label, p, #contact-form input, #contact-form textarea {
     margin-left: 300px;
     padding: 20px;
 }
-
 #intro {
+    position: fixed;
+    top: calc(50% - (93vh / 2));
+    left: 16px;
+    right: 0;
     display: flex;
     justify-content: space-between;
-    width: 80%;
     padding: 20px;
     background-color: var(--background-color);
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    margin-left: calc(310px + 36px);
-    margin-right: 35px;
+    margin: 0 35px;
     max-height: calc(93vh - 2 * 20px);
     overflow: auto;
     border: 2px solid var(--highlight-color);
 }
-
 
 #brief, #contact {
     width: 45%;
