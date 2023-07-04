@@ -3,7 +3,7 @@
   flex-direction: row;
   justify-content: flex-start;
   overflow-y: auto;
-  max-height: calc(93vh - 2 * 20px - 90px); /* Adjust this calculation as needed */
+  max-height: calc(93vh - 20px - 90px); /* Adjust this calculation as needed */
 }
 
 
@@ -104,6 +104,22 @@
 
 .section-box a p.active {
   background-color: var(--highlight-color);
+}
+
+.percentage-input {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.percentage-symbol {
+  position: absolute;
+  right: 5px;
+  color: var(--secondary-color);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background-color: var(--secondary-color);
 }
 
 

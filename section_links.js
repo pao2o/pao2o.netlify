@@ -58,36 +58,50 @@ function letfBacktest() {
   const createInput = (label, name) => {
     if (label === "Start Date" || label === "End Date") {
       const defaultValue = label === "Start Date" ? "1960-01-01" : "2023-04-12";
-      return `
-        <label>${label}:</label>
-        <input type="date" name="${name}" value="${defaultValue}"><br>
-      `;
+      const input = document.createElement("input");
+      input.type = "date";
+      input.name = name;
+      input.value = defaultValue;
+      input.classList.add(name);
+      input.addEventListener("input", calculateAndUpdatePeriodLength); // Attach event listener
+
+      const dateInput = document.createElement("div");
+      dateInput.classList.add("date-input");
+      dateInput.appendChild(input);
+
+      const labelElement = document.createElement("label");
+      labelElement.textContent = label;
+
+      const container = document.createElement("div");
+      container.appendChild(labelElement);
+      container.appendChild(dateInput);
+      container.appendChild(document.createElement("br"));
+
+      return container.innerHTML;
     } else if (label === "Add to CAGR" || label === "Add to 3M Treasury") {
-      const defaultValue = "0.00%";
+      const defaultValue = "0.00";
       return `
         <label>${label}:</label>
-        <input type="text" name="${name}" value="${defaultValue}"><br>
+        <div class="percentage-input">
+          <input type="text" name="${name}" value="${defaultValue}"><span class="percentage-symbol">%</span>
+        </div><br>
       `;
-    } else if (label === "Adjusted vol / Actual vol") {
-      const defaultValue = "1";
+    } else if (label === "Adjusted vol / Actual vol" || label === "Daily Leverage") {
+      const defaultValue = label === "Adjusted vol / Actual vol" ? "1" : "3";
       return `
         <label>${label}:</label>
-        <input type="text" name="${name}" value="${defaultValue}"><br>
-      `;
-    } else if (label === "Daily Leverage") {
-      const defaultValue = "3";
-      return `
-        <label>${label}:</label>
-        <input type="text" name="${name}" value="${defaultValue}"><br>
+        <input type="number" name="${name}" value="${defaultValue}"><br>
       `;
     } else if (label === "LETF expense ratio") {
-      const defaultValue = "0.91%";
+      const defaultValue = "0.91";
       return `
         <label>${label}:</label>
-        <input type="text" name="${name}" value="${defaultValue}"><br>
+        <div class="percentage-input">
+          <input type="text" name="${name}" value="${defaultValue}"><span class="percentage-symbol">%</span>
+        </div><br>
       `;
     } else {
-      return label ? `<label>${label}:</label><input type="text" name="${name}"><br>` : `<input type="text" name="${name}"><br>`;
+      return label ? `<label>${label}:</label><input type="number" name="${name}" readonly><br>` : `<input type="text" name="${name}" readonly><br>`;
     }
   };
   
@@ -175,3 +189,34 @@ function toggleInputContainer(label) {
 }
 
 highlightActiveLink();
+
+function calculateAndUpdatePeriodLength() {
+  const startDateInput = document.querySelector('input[name="start_date"]');
+  const endDateInput = document.querySelector('input[name="end_date"]');
+  const periodLengthInput = document.querySelector('input[name="period_length"]');
+
+  console.log("Start Date:", startDateInput.value);
+  console.log("End Date:", endDateInput.value);
+
+  const startDate = new Date(startDateInput.value);
+  const endDate = new Date(endDateInput.value);
+
+  const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+  const daysDifference = Math.floor((endDate - startDate) / millisecondsPerDay);
+  const monthsDifference = daysDifference / 365.25; // Assuming each month has 30 days
+
+  periodLengthInput.value = monthsDifference;
+}
+
+
+// Call the function to create the form and attach event listeners when the content is loaded
+document.addEventListener("DOMContentLoaded", function() {
+  const visualizationBox = document.getElementById("visualization-box");
+  visualizationBox.innerHTML = letfBacktest();
+  
+  // Attach event listeners to start date and end date inputs
+  const startDateInput = document.querySelector('input[name="start_date"]');
+  const endDateInput = document.querySelector('input[name="end_date"]');
+  startDateInput.addEventListener("input", calculateAndUpdatePeriodLength);
+  endDateInput.addEventListener("input", calculateAndUpdatePeriodLength);
+});
