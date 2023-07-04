@@ -124,7 +124,7 @@ label, p, #contact-form input, #contact-form textarea {
 }
 
 #contact-form {
-    background-color: #1b1e1f;
+    background-color: rgba(255, 255, 255, 0.05);
     padding: 20px;
     border-radius: 5px;
     margin-bottom: 600px;
