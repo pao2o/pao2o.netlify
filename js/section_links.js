@@ -64,6 +64,7 @@ function letfBacktest() {
       input.value = defaultValue;
       input.classList.add(name);
       input.addEventListener("input", calculateAndUpdatePeriodLength); // Attach event listener
+      input.addEventListener("input", calculatePeriodCAGR);
 
       const dateInput = document.createElement("div");
       dateInput.classList.add("date-input");
@@ -177,30 +178,21 @@ function toggleInputContainer(label) {
 
 highlightActiveLink();
 
-function calculateAndUpdatePeriodLength() {
-  const startDateInput = document.querySelector('input[name="start_date"]');
-  const endDateInput = document.querySelector('input[name="end_date"]');
-  const periodLengthInput = document.querySelector('input[name="period_length"]');
-
-  const startDate = new Date(startDateInput.value);
-  const endDate = new Date(endDateInput.value);
-
-  const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
-  const daysDifference = Math.floor((endDate - startDate) / millisecondsPerDay);
-  const monthsDifference = daysDifference / 365.25; // Assuming each month has 30 days
-
-  periodLengthInput.value = monthsDifference;
-}
-
-
 // Call the function to create the form and attach event listeners when the content is loaded
 document.addEventListener("DOMContentLoaded", function() {
   const visualizationBox = document.getElementById("visualization-box");
   visualizationBox.innerHTML = letfBacktest();
-  
+
   // Attach event listeners to start date and end date inputs
   const startDateInput = document.querySelector('input[name="start_date"]');
   const endDateInput = document.querySelector('input[name="end_date"]');
-  startDateInput.addEventListener("input", calculateAndUpdatePeriodLength);
-  endDateInput.addEventListener("input", calculateAndUpdatePeriodLength);
+  startDateInput.addEventListener("input", function() {
+    calculateAndUpdatePeriodLength();
+    calculatePeriodCAGR();
+  });
+  endDateInput.addEventListener("input", function() {
+    calculateAndUpdatePeriodLength();
+    calculatePeriodCAGR();
+  });
+
 });
