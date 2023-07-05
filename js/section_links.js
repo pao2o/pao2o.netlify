@@ -151,19 +151,6 @@ function letfBacktest() {
 
 //HELPER FUNCTIONS//
 
-function formatPercentage(event) {
-    const input = event.target;
-    let value = input.value;
-    value = value.replace('%', '');
-    if (!isNaN(value)) {
-        const decimalValue = parseFloat(value) / 100;
-        input.value = value + '%';
-        console.log(decimalValue);
-    } else {
-        input.value = value;
-        console.log('Invalid input');
-    }
-}
 
 function highlightActiveLink() {
     var sectionLinks = document.querySelectorAll('.section-box a p');
@@ -194,9 +181,6 @@ function calculateAndUpdatePeriodLength() {
   const startDateInput = document.querySelector('input[name="start_date"]');
   const endDateInput = document.querySelector('input[name="end_date"]');
   const periodLengthInput = document.querySelector('input[name="period_length"]');
-
-  console.log("Start Date:", startDateInput.value);
-  console.log("End Date:", endDateInput.value);
 
   const startDate = new Date(startDateInput.value);
   const endDate = new Date(endDateInput.value);
