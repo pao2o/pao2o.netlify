@@ -78,6 +78,7 @@ function letfBacktest() {
       input.addEventListener("input", calculatePeriodCAGR);
       input.addEventListener("input", calculatePeriodVolatility);
       input.addEventListener("input", calculateTreasuryAverage);
+      input.addEventListener("input", calculateAdjustedPeriodCAGR);
   
   
       // Format the date value as yyyy-mm-dd
@@ -215,13 +216,15 @@ document.addEventListener("DOMContentLoaded", function() {
     calculateAndUpdatePeriodLength();
     calculatePeriodCAGR();
     calculatePeriodVolatility();
-    calculateTreasuryAverage()
+    calculateTreasuryAverage();
+    calculateAdjustedPeriodCAGR();
   });
   endDateInput.addEventListener("input", function() {
     calculateAndUpdatePeriodLength();
     calculatePeriodCAGR();
     calculatePeriodVolatility();
-    calculateTreasuryAverage()
+    calculateTreasuryAverage();
+    calculateAdjustedPeriodCAGR();
   });
 
 });
