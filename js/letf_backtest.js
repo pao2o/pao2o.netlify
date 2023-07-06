@@ -180,6 +180,34 @@ function calculateAdjustedPeriodCAGR() {
   
 
 
+function calculateLETFCAGR() {
+    console.log("test");
+    const startDateInput = document.querySelector('input[name="start_date"]');
+    const endDateInput = document.querySelector('input[name="end_date"]');
+    const periodLengthInput = document.querySelector('input[name="period_length"]');
+    const letfCAGRInput = document.querySelector('input[name="letf_cagr"]');
+  
+    const startDate = new Date(startDateInput.value + "T00:00:00Z");
+    const endDate = new Date(endDateInput.value + "T00:00:00Z");
+    const periodLength = parseFloat(periodLengthInput.value);
+  
+    const query = `SELECT "1+leveraged daily return" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
+  
+    fetchDataFromDatabase("sql/letf_backtest.db", query)
+      .then((result) => {
+        // Process the query result
+        const values = result.map((row) => row[0]);
+        const returns = values.map((value) => parseFloat(value));
+  
+        const product = returns.reduce((acc, value) => acc * value, 1);
+        const letf_cagr = Math.pow(product, 1 / periodLength) - 1;
+  
+        letfCAGRInput.value = (letf_cagr * 100).toFixed(2);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }
 
 
 
