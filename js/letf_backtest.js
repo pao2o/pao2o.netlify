@@ -54,7 +54,7 @@ function calculateAndUpdatePeriodLength() {
     const endDate = new Date(endDateInput.value);
     const periodLength = parseFloat(periodLengthInput.value);
   
-    const query = `SELECT Dates, "1+daily return" FROM Data WHERE substr(Dates, 7, 4) || '-' || substr(Dates, 1, 2) || '-' || substr(Dates, 4, 2) BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
+    const query = `SELECT Dates, "1+daily return" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
 
     fetchDataFromDatabase("sql/letf_backtest.db", query)
       .then((result) => {
