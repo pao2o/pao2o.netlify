@@ -79,9 +79,7 @@ function calculatePeriodCAGR() {
 function calculatePeriodVolatility() {
   const startDateInput = document.querySelector('input[name="start_date"]');
   const endDateInput = document.querySelector('input[name="end_date"]');
-  const periodVolatilityInput = document.querySelector(
-    'input[name="period_volatility"]'
-  );
+  const periodVolatilityInput = document.querySelector('input[name="period_volatility"]');
 
   const startDate = new Date(startDateInput.value + "T00:00:00Z");
   const endDate = new Date(endDateInput.value + "T00:00:00Z");
@@ -154,6 +152,44 @@ function calculateAdjustedPeriodCAGR() {
         console.error("Error fetching data:", error);
       });
   }
+
+
+  function calculateAdjustedPeriodVolatility() {
+    const startDateInput = document.querySelector('input[name="start_date"]');
+    const endDateInput = document.querySelector('input[name="end_date"]');
+    const adjustedVolatilityInput = document.querySelector('input[name="adjusted_volatility"]');
+  
+    const startDate = new Date(startDateInput.value + "T00:00:00Z");
+    const endDate = new Date(endDateInput.value + "T00:00:00Z");
+  
+    const query = `SELECT "adj daily return" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
+  
+    fetchDataFromDatabase("sql/letf_backtest.db", query)
+      .then((result) => {
+        // Process the query result
+        const values = result.map((row) => row[0]);
+        const returns = values.map((value) => parseFloat(value));
+  
+        const stdev = Math.sqrt(252) * standardDeviation(returns);
+        adjustedVolatilityInput.value = stdev.toFixed(2);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*HELPER FUNCTIONS*/
