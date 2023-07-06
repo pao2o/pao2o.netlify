@@ -178,7 +178,29 @@ function calculateAdjustedPeriodCAGR() {
       });
   }
   
-
+  function calculateAdjustedTreasuryAverage() {
+    const startDateInput = document.querySelector('input[name="start_date"]');
+    const endDateInput = document.querySelector('input[name="end_date"]');
+    const adjustedTreasuryAvgInput = document.querySelector('input[name="adjusted_3m_treasury_avg"]');
+  
+    const startDate = new Date(startDateInput.value + "T00:00:00Z");
+    const endDate = new Date(endDateInput.value + "T00:00:00Z");
+  
+    const query = `SELECT "adj 3M Treasury" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
+  
+    fetchDataFromDatabase("sql/letf_backtest.db", query)
+      .then((result) => {
+        // Process the query result
+        const values = result.map((row) => row[0]);
+        const returns = values.map((value) => parseFloat(value));
+        const sum = returns.reduce((acc, value) => acc + value, 0);
+        const average = sum / returns.length;
+        adjustedTreasuryAvgInput.value = average.toFixed(2);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
 
 function calculateLETFCAGR() {
     console.log("test");

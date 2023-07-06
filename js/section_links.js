@@ -80,6 +80,7 @@ function letfBacktest() {
       input.addEventListener("input", calculateTreasuryAverage);
       input.addEventListener("input", calculateAdjustedPeriodCAGR);
       input.addEventListener("input", calculateAdjustedPeriodVolatility);
+      input.addEventListener("input", calculateAdjustedTreasuryAverage);
       input.addEventListener("input", calculateLETFCAGR);
   
   
@@ -220,7 +221,8 @@ document.addEventListener("DOMContentLoaded", function() {
     calculatePeriodVolatility();
     calculateTreasuryAverage();
     calculateAdjustedPeriodCAGR();
-    calculateAdjustedPeriodVolatility()
+    calculateAdjustedPeriodVolatility();
+    calculateAdjustedTreasuryAverage();
     calculateLETFCAGR()
   });
   endDateInput.addEventListener("input", function() {
@@ -229,8 +231,9 @@ document.addEventListener("DOMContentLoaded", function() {
     calculatePeriodVolatility();
     calculateTreasuryAverage();
     calculateAdjustedPeriodCAGR();
-    calculateAdjustedPeriodVolatility()
-    calculateLETFCAGR()
+    calculateAdjustedPeriodVolatility();
+    calculateAdjustedTreasuryAverage();
+    calculateLETFCAGR();
   });
 
 });
