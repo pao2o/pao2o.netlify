@@ -203,7 +203,6 @@ function calculateAdjustedPeriodCAGR() {
 }
 
 function calculateLETFCAGR() {
-    console.log("test");
     const startDateInput = document.querySelector('input[name="start_date"]');
     const endDateInput = document.querySelector('input[name="end_date"]');
     const periodLengthInput = document.querySelector('input[name="period_length"]');
@@ -232,9 +231,22 @@ function calculateLETFCAGR() {
   }
 
 
+function calculateLETFVolatility(){
+    const dailyLeverageInput = document.querySelector('input[name="daily_leverage"]');
+    const adjustedVolatilityInput = document.querySelector('input[name="adjusted_volatility"]');
+    const letfVolatilityInput = document.querySelector('input[name="letf_volatility"]');
 
+    const test = dailyLeverageInput.value
+    const test2 = adjustedVolatilityInput.value
 
+    try{
+        letfVolatilityInput.value = (dailyLeverageInput.value * adjustedVolatilityInput.value).toFixed(2);
+    }
+    catch{
+        letfVolatilityInput.value = "Error";
+    }
 
+}
 
 
 
