@@ -56,29 +56,52 @@ function letfBacktest() {
   ];
 
   const createInput = (label, name) => {
+    const percentageFields = [
+      "Period CAGR",
+      "Period Volatility",
+      "3M Treasury avg",
+      "Adjusted CAGR",
+      "Adjusted Volatility",
+      "Adjusted 3M Treasury avg",
+      "LETF CAGR",
+      "LETF Volatility"
+    ];
+  
     if (label === "Start Date" || label === "End Date") {
       const defaultValue = label === "Start Date" ? "1960-01-01" : "2023-04-12";
       const input = document.createElement("input");
       input.type = "date";
       input.name = name;
-      input.value = defaultValue;
+      input.valueAsDate = new Date(defaultValue);
       input.classList.add(name);
-      input.addEventListener("input", calculateAndUpdatePeriodLength); // Attach event listener
+      input.addEventListener("input", calculateAndUpdatePeriodLength);
       input.addEventListener("input", calculatePeriodCAGR);
-
+      input.addEventListener("input", calculatePeriodVolatility);
+  
+      // Format the date value as yyyy-mm-dd
+      const formattedValue = input.valueAsDate.toISOString().split("T")[0];
+      input.setAttribute("value", formattedValue);
+  
       const dateInput = document.createElement("div");
       dateInput.classList.add("date-input");
       dateInput.appendChild(input);
-
+  
       const labelElement = document.createElement("label");
       labelElement.textContent = label;
-
+  
       const container = document.createElement("div");
       container.appendChild(labelElement);
       container.appendChild(dateInput);
       container.appendChild(document.createElement("br"));
-
+  
       return container.innerHTML;
+    } else if (percentageFields.includes(label)) {
+      return `
+        <label>${label}:</label>
+        <div class="percentage-input">
+          <input type="text" name="${name}" value=""><span class="percentage-symbol">%</span>
+        </div><br>
+      `;
     } else if (label === "Add to CAGR" || label === "Add to 3M Treasury") {
       const defaultValue = "0.00";
       return `
@@ -189,10 +212,12 @@ document.addEventListener("DOMContentLoaded", function() {
   startDateInput.addEventListener("input", function() {
     calculateAndUpdatePeriodLength();
     calculatePeriodCAGR();
+    calculatePeriodVolatility();
   });
   endDateInput.addEventListener("input", function() {
     calculateAndUpdatePeriodLength();
     calculatePeriodCAGR();
+    calculatePeriodVolatility();
   });
 
 });
