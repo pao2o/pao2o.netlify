@@ -58,9 +58,7 @@ function calculatePeriodCAGR() {
   const endDate = new Date(endDateInput.value + "T00:00:00Z");
   const periodLength = parseFloat(periodLengthInput.value);
 
-  const query = `SELECT "1+daily return" FROM Data WHERE Dates BETWEEN '${formatDate(
-    startDate
-  )}' AND '${formatDate(endDate)}'`;
+  const query = `SELECT "1+daily return" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
 
   fetchDataFromDatabase("sql/letf_backtest.db", query)
     .then((result) => {
@@ -88,9 +86,7 @@ function calculatePeriodVolatility() {
   const startDate = new Date(startDateInput.value + "T00:00:00Z");
   const endDate = new Date(endDateInput.value + "T00:00:00Z");
 
-  const query = `SELECT "daily return" FROM Data WHERE Dates BETWEEN '${formatDate(
-    startDate
-  )}' AND '${formatDate(endDate)}'`;
+  const query = `SELECT "daily return" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
 
   fetchDataFromDatabase("sql/letf_backtest.db", query)
     .then((result) => {
@@ -105,6 +101,31 @@ function calculatePeriodVolatility() {
       console.error("Error fetching data:", error);
     });
 }
+
+function calculateTreasuryAverage() {
+    const startDateInput = document.querySelector('input[name="start_date"]');
+    const endDateInput = document.querySelector('input[name="end_date"]');
+    const treasuryAvgInput = document.querySelector('input[name="3m_treasury_avg"]');
+  
+    const startDate = new Date(startDateInput.value + "T00:00:00Z");
+    const endDate = new Date(endDateInput.value + "T00:00:00Z");
+  
+    const query = `SELECT "3M Treasury" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
+  
+    fetchDataFromDatabase("sql/letf_backtest.db", query)
+      .then((result) => {
+        // Process the query result
+        const values = result.map((row) => row[0]);
+        const returns = values.map((value) => parseFloat(value));
+        const sum = returns.reduce((acc, value) => acc + value, 0);
+        const average = sum / returns.length;
+        treasuryAvgInput.value = average.toFixed(2);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
+  
 
 /*HELPER FUNCTIONS*/
 //format date in 'yyyy-MM-dd' format
