@@ -1,23 +1,23 @@
 function handleSectionClick(event) {
-    event.preventDefault(); // Prevent the default behavior of the anchor tag
-  
-    // Get the visualization box element
-    var visualizationBox = document.getElementById('visualization-box');
-  
-    // Get the href of the clicked link
-    var href = event.target.closest('a').getAttribute('href');
-    
-    var content;
-    if (href === '#letf-backtest') {
-        content = letfBacktest()
-    } else if (href === '#jaro-winkler') {
-        content = '<h2>Jaro-Winkler</h2>';
-    } else {
-        content = '<h2>Unknown section</h2>';
-    }
-  
-    // Add the fade-in class to the new content
-    visualizationBox.innerHTML = `
+  event.preventDefault(); // Prevent the default behavior of the anchor tag
+
+  // Get the visualization box element
+  var visualizationBox = document.getElementById("visualization-box");
+
+  // Get the href of the clicked link
+  var href = event.target.closest("a").getAttribute("href");
+
+  var content;
+  if (href === "#letf-backtest") {
+    content = letfBacktest();
+  } else if (href === "#jaro-winkler") {
+    content = "<h2>Jaro-Winkler</h2>";
+  } else {
+    content = "<h2>Unknown section</h2>";
+  }
+
+  // Add the fade-in class to the new content
+  visualizationBox.innerHTML = `
       <div>
         ${content}
       </div>
@@ -27,32 +27,45 @@ function letfBacktest() {
   const inputGroups = [
     {
       title: "Set Dates",
-      labels: ["Start Date", "End Date"]
+      labels: ["Start Date", "End Date"],
     },
     {
       title: "Make Adjustments",
-      labels: ["Add to CAGR", "Adjusted vol / Actual vol", "Add to 3M Treasury"]
+      labels: [
+        "Add to CAGR",
+        "Adjusted vol / Actual vol",
+        "Add to 3M Treasury",
+      ],
     },
     {
       title: "Set Leverage",
-      labels: ["Daily Leverage", "LETF expense ratio"]
+      labels: ["Daily Leverage", "LETF expense ratio"],
     },
     {
       title: "Actual Period Characteristics",
-      labels: ["Period length", "Period CAGR", "Period Volatility", "3M Treasury avg"]
+      labels: [
+        "Period length",
+        "Period CAGR",
+        "Period Volatility",
+        "3M Treasury avg",
+      ],
     },
     {
       title: "Adjusted Period Characteristics",
-      labels: ["Adjusted CAGR", "Adjusted Volatility", "Adjusted 3M Treasury avg"]
+      labels: [
+        "Adjusted CAGR",
+        "Adjusted Volatility",
+        "Adjusted 3M Treasury avg",
+      ],
     },
     {
       title: "LETF Results",
-      labels: ["LETF CAGR", "LETF Volatility"]
+      labels: ["LETF CAGR", "LETF Volatility"],
     },
     {
       title: "Helpers",
-      labels: ["", "", "", ""]
-    }
+      labels: ["", "", "", ""],
+    },
   ];
 
   const createInput = (label, name) => {
@@ -64,9 +77,9 @@ function letfBacktest() {
       "Adjusted Volatility",
       "Adjusted 3M Treasury avg",
       "LETF CAGR",
-      "LETF Volatility"
+      "LETF Volatility",
     ];
-  
+
     if (label === "Start Date" || label === "End Date") {
       const defaultValue = label === "Start Date" ? "1960-01-01" : "2023-04-12";
       const input = document.createElement("input");
@@ -82,27 +95,45 @@ function letfBacktest() {
       input.addEventListener("input", calculateAdjustedPeriodVolatility);
       input.addEventListener("input", calculateAdjustedTreasuryAverage);
       input.addEventListener("input", calculateLETFCAGR);
-      input.addEventListener("input", calculateLETFVolatility);
-  
-  
+
       // Format the date value as yyyy-mm-dd
       const formattedValue = input.valueAsDate.toISOString().split("T")[0];
       input.setAttribute("value", formattedValue);
-  
+
       const dateInput = document.createElement("div");
       dateInput.classList.add("date-input");
       dateInput.appendChild(input);
-  
+
       const labelElement = document.createElement("label");
       labelElement.textContent = label;
-  
+
       const container = document.createElement("div");
       container.appendChild(labelElement);
       container.appendChild(dateInput);
       container.appendChild(document.createElement("br"));
-  
+
       return container.innerHTML;
-    } else if (percentageFields.includes(label)) {
+    } else if (label === "Daily Leverage") {
+      const defaultValue = "3";
+      const input = document.createElement("input");
+      input.type = "number";
+      input.name = name;
+      input.defaultValue = defaultValue; // Corrected attribute name to set the default value
+      input.addEventListener("input", function () {
+        calculateLETFVolatility();
+      });
+    
+      const labelElement = document.createElement("label");
+      labelElement.textContent = label;
+    
+      const container = document.createElement("div");
+      container.appendChild(labelElement);
+      container.appendChild(input);
+      container.appendChild(document.createElement("br"));
+    
+      return container.innerHTML;
+    }
+     else if (percentageFields.includes(label)) {
       return `
         <label>${label}:</label>
         <div class="percentage-input">
@@ -117,8 +148,8 @@ function letfBacktest() {
           <input type="text" name="${name}" value="${defaultValue}"><span class="percentage-symbol">%</span>
         </div><br>
       `;
-    } else if (label === "Adjusted vol / Actual vol" || label === "Daily Leverage") {
-      const defaultValue = label === "Adjusted vol / Actual vol" ? "1" : "3";
+    } else if (label === "Adjusted vol / Actual vol") {
+      const defaultValue = "1";
       return `
         <label>${label}:</label>
         <input type="number" name="${name}" value="${defaultValue}"><br>
@@ -132,15 +163,19 @@ function letfBacktest() {
         </div><br>
       `;
     } else {
-      return label ? `<label>${label}:</label><input type="number" name="${name}" readonly><br>` : `<input type="text" name="${name}" readonly><br>`;
+      return label
+        ? `<label>${label}:</label><input type="number" name="${name}" readonly><br>`
+        : `<input type="text" name="${name}" readonly><br>`;
     }
   };
-  
+
   const createInputs = (labels) => {
-    return labels.map(label => {
-      const name = label.replace(/ /g, '_').toLowerCase();
-      return createInput(label, name);
-    }).join('');
+    return labels
+      .map((label) => {
+        const name = label.replace(/ /g, "_").toLowerCase();
+        return createInput(label, name);
+      })
+      .join("");
   };
 
   const createFormGroup = (groupTitle, groupLabels) => {
@@ -160,8 +195,14 @@ function letfBacktest() {
   };
 
   const createFormContent = () => {
-    const leftGroups = inputGroups.slice(3).map(group => createFormGroup(group.title, group.labels)).join('');
-    const rightGroups = inputGroups.slice(0, 3).map(group => createFormGroup(group.title, group.labels)).join('');
+    const leftGroups = inputGroups
+      .slice(3)
+      .map((group) => createFormGroup(group.title, group.labels))
+      .join("");
+    const rightGroups = inputGroups
+      .slice(0, 3)
+      .map((group) => createFormGroup(group.title, group.labels))
+      .join("");
 
     return `
         <h2>LETF Backtest</h2>
@@ -179,55 +220,50 @@ function letfBacktest() {
   return createFormContent();
 }
 
-
 //HELPER FUNCTIONS//
 
-
 function highlightActiveLink() {
-    var sectionLinks = document.querySelectorAll('.section-box a p');
+  var sectionLinks = document.querySelectorAll(".section-box a p");
 
-    sectionLinks.forEach(function(link) {
-        link.addEventListener('click', function(event) {
-            // Remove the active class from all links
-            sectionLinks.forEach(function(otherLink) {
-                otherLink.classList.remove('active');
-            });
-            
-            // Add the active class to the clicked link
-            event.target.classList.add('active');
-        });
+  sectionLinks.forEach(function (link) {
+    link.addEventListener("click", function (event) {
+      // Remove the active class from all links
+      sectionLinks.forEach(function (otherLink) {
+        otherLink.classList.remove("active");
+      });
+
+      // Add the active class to the clicked link
+      event.target.classList.add("active");
     });
+  });
 }
 
 function toggleInputContainer(label) {
   const inputContainer = label.nextElementSibling;
-  const indicator = label.querySelector('.indicator');
+  const indicator = label.querySelector(".indicator");
   inputContainer.classList.toggle("collapsed");
-  indicator.textContent = inputContainer.classList.contains('collapsed') ? '▼' : '▲';
+  indicator.textContent = inputContainer.classList.contains("collapsed")
+    ? "▼"
+    : "▲";
 }
 
 highlightActiveLink();
 
 // Call the function to create the form and attach event listeners when the content is loaded
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   const visualizationBox = document.getElementById("visualization-box");
   visualizationBox.innerHTML = letfBacktest();
 
   // Attach event listeners to start date and end date inputs
   const startDateInput = document.querySelector('input[name="start_date"]');
   const endDateInput = document.querySelector('input[name="end_date"]');
-  startDateInput.addEventListener("input", function() {
-    calculateAndUpdatePeriodLength();
-    calculatePeriodCAGR();
-    calculatePeriodVolatility();
-    calculateTreasuryAverage();
-    calculateAdjustedPeriodCAGR();
-    calculateAdjustedPeriodVolatility();
-    calculateAdjustedTreasuryAverage();
-    calculateLETFCAGR()
-    calculateLETFVolatility();
-  });
-  endDateInput.addEventListener("input", function() {
+  const dailyLeverageInput = document.querySelector(
+    'input[name="daily_leverage"]'
+  );
+  const adjustedVolatilityInput = document.querySelector(
+    'input[name="adjusted_volatility"]'
+  );
+  startDateInput.addEventListener("input", function () {
     calculateAndUpdatePeriodLength();
     calculatePeriodCAGR();
     calculatePeriodVolatility();
@@ -236,7 +272,17 @@ document.addEventListener("DOMContentLoaded", function() {
     calculateAdjustedPeriodVolatility();
     calculateAdjustedTreasuryAverage();
     calculateLETFCAGR();
-    calculateLETFVolatility();
   });
-
+  endDateInput.addEventListener("input", function () {
+    calculateAndUpdatePeriodLength();
+    calculatePeriodCAGR();
+    calculatePeriodVolatility();
+    calculateTreasuryAverage();
+    calculateAdjustedPeriodCAGR();
+    calculateAdjustedPeriodVolatility();
+    calculateAdjustedTreasuryAverage();
+    calculateLETFCAGR();
+  });
+  dailyLeverageInput.addEventListener("input", calculateLETFVolatility);
+  adjustedVolatilityInput.addEventListener("input", calculateLETFVolatility);
 });

@@ -46,7 +46,6 @@ function calculateAndUpdatePeriodLength() {
 }
 
 function calculatePeriodCAGR() {
-  console.log("test");
   const startDateInput = document.querySelector('input[name="start_date"]');
   const endDateInput = document.querySelector('input[name="end_date"]');
   const periodLengthInput = document.querySelector(
@@ -125,7 +124,6 @@ function calculateTreasuryAverage() {
 }
 
 function calculateAdjustedPeriodCAGR() {
-    console.log("test");
     const startDateInput = document.querySelector('input[name="start_date"]');
     const endDateInput = document.querySelector('input[name="end_date"]');
     const periodLengthInput = document.querySelector('input[name="period_length"]');
@@ -172,6 +170,7 @@ function calculateAdjustedPeriodCAGR() {
   
         const stdev = Math.sqrt(252) * standardDeviation(returns);
         adjustedVolatilityInput.value = stdev.toFixed(2);
+        calculateLETFVolatility(stdev.toFixed(2))
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -231,16 +230,14 @@ function calculateLETFCAGR() {
   }
 
 
-function calculateLETFVolatility(){
+function calculateLETFVolatility(adjustedVolatility){
+    console.log("test");
     const dailyLeverageInput = document.querySelector('input[name="daily_leverage"]');
-    const adjustedVolatilityInput = document.querySelector('input[name="adjusted_volatility"]');
     const letfVolatilityInput = document.querySelector('input[name="letf_volatility"]');
 
-    const test = dailyLeverageInput.value
-    const test2 = adjustedVolatilityInput.value
 
     try{
-        letfVolatilityInput.value = (dailyLeverageInput.value * adjustedVolatilityInput.value).toFixed(2);
+        letfVolatilityInput.value = (dailyLeverageInput.value * adjustedVolatility).toFixed(2);
     }
     catch{
         letfVolatilityInput.value = "Error";
