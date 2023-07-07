@@ -1,3 +1,36 @@
+function attachLETFBacktestEventListeners() {
+  // Attach event listeners to start date and end date inputs
+  const startDateInput = document.querySelector('input[name="start_date"]');
+  const endDateInput = document.querySelector('input[name="end_date"]');
+  const dailyLeverageInput = document.querySelector('input[name="daily_leverage"]');
+  const adjustedVolatilityInput = document.querySelector('input[name="adjusted_volatility"]');
+  startDateInput.addEventListener("input", function () {
+    calculateAndUpdatePeriodLength();
+    calculatePeriodCAGR();
+    calculatePeriodVolatility();
+    calculateTreasuryAverage();
+    calculateAdjustedPeriodCAGR();
+    calculateAdjustedPeriodVolatility();
+    calculateAdjustedTreasuryAverage();
+    calculateLETFCAGR();
+    calculateHelperFunction();
+  });
+  endDateInput.addEventListener("input", function () {
+    calculateAndUpdatePeriodLength();
+    calculatePeriodCAGR();
+    calculatePeriodVolatility();
+    calculateTreasuryAverage();
+    calculateAdjustedPeriodCAGR();
+    calculateAdjustedPeriodVolatility();
+    calculateAdjustedTreasuryAverage();
+    calculateLETFCAGR();
+    calculateHelperFunction();
+  });
+  dailyLeverageInput.addEventListener("input", calculateLETFVolatility);
+  adjustedVolatilityInput.addEventListener("input", calculateLETFVolatility);
+}
+
+
 function fetchDataFromDatabase(databasePath, query) {
   return new Promise((resolve, reject) => {
     // Initialize SQL.js using the initSqlJs function
@@ -245,7 +278,41 @@ function calculateLETFVolatility(adjustedVolatility){
 
 }
 
+function calculateHelperFunction() {
+  const startDateInput = document.querySelector('input[name="start_date"]');
+  const endDateInput = document.querySelector('input[name="end_date"]');
+  const helper1Input = document.querySelector('input[name="helper1"]');
+  const helper2Input = document.querySelector('input[name="helper2"]');
+  const helper3Input = document.querySelector('input[name="helper3"]');
+  const helper4Input = document.querySelector('input[name="helper4"]');
 
+  const startDate = new Date(startDateInput.value + "T00:00:00Z");
+  const endDate = new Date(endDateInput.value + "T00:00:00Z");
+
+  const query = `SELECT "return squared", "return cubed", "return power 4", "return power 5" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
+  
+  fetchDataFromDatabase("sql/letf_backtest.db", query)
+    .then((result) => {
+      // Process the query result
+      const values1 = result.map((row) => row[0]);
+      const values2 = result.map((row) => row[1]);
+      const values3 = result.map((row) => row[2]);
+      const values4 = result.map((row) => row[3]);
+
+      const average1 = calculateAverage(values1);
+      const average2 = calculateAverage(values2);
+      const average3 = calculateAverage(values3);
+      const average4 = calculateAverage(values4);
+
+      helper1Input.value = (252 * average1).toFixed(9);
+      helper2Input.value = (252 * average2).toFixed(9);
+      helper3Input.value = (252 * average3).toFixed(9);
+      helper4Input.value = (252 * average4).toFixed(9);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
 
 
 
@@ -266,6 +333,10 @@ function standardDeviation(values) {
   const variance =
     squaredDifferences.reduce((acc, value) => acc + value, 0) / values.length;
   const stdev = Math.sqrt(variance);
-
   return stdev;
+}
+
+function calculateAverage(values) {
+  const sum = values.reduce((acc, val) => acc + val, 0);
+  return sum / values.length;
 }

@@ -10,19 +10,39 @@ function handleSectionClick(event) {
   var content;
   if (href === "#letf-backtest") {
     content = letfBacktest();
-  } else if (href === "#jaro-winkler") {
-    content = "<h2>Jaro-Winkler</h2>";
-  } else {
-    content = "<h2>Unknown section</h2>";
-  }
-
-  // Add the fade-in class to the new content
-  visualizationBox.innerHTML = `
+    
+    // Add the content to the visualization box
+    visualizationBox.innerHTML = `
       <div>
         ${content}
       </div>
     `;
+
+    // Call the function to attach event listeners and perform calculations when the content is loaded
+    attachLETFBacktestEventListeners();
+  } else if (href === "#jaro-winkler") {
+    content = "<h2>Jaro-Winkler</h2>";
+    
+    // Add the content to the visualization box
+    visualizationBox.innerHTML = `
+      <div>
+        ${content}
+      </div>
+    `;
+  } else {
+    content = "<h2>Unknown section</h2>";
+    
+    // Add the content to the visualization box
+    visualizationBox.innerHTML = `
+      <div>
+        ${content}
+      </div>
+    `;
+  }
 }
+
+
+
 function letfBacktest() {
   const inputGroups = [
     {
@@ -64,7 +84,7 @@ function letfBacktest() {
     },
     {
       title: "Helpers",
-      labels: ["", "", "", ""],
+      labels: ["helper1", "helper2", "helper3", "helper4"],
     },
   ];
 
@@ -95,6 +115,7 @@ function letfBacktest() {
       input.addEventListener("input", calculateAdjustedPeriodVolatility);
       input.addEventListener("input", calculateAdjustedTreasuryAverage);
       input.addEventListener("input", calculateLETFCAGR);
+      input.addEventListener("input", calculateHelperFunction);
 
       // Format the date value as yyyy-mm-dd
       const formattedValue = input.valueAsDate.toISOString().split("T")[0];
@@ -132,8 +153,7 @@ function letfBacktest() {
       container.appendChild(document.createElement("br"));
     
       return container.innerHTML;
-    }
-     else if (percentageFields.includes(label)) {
+    } else if (percentageFields.includes(label)) {
       return `
         <label>${label}:</label>
         <div class="percentage-input">
@@ -163,9 +183,16 @@ function letfBacktest() {
         </div><br>
       `;
     } else {
-      return label
-        ? `<label>${label}:</label><input type="number" name="${name}" readonly><br>`
-        : `<input type="text" name="${name}" readonly><br>`;
+      const input = document.createElement("input");
+      input.type = "text";
+      input.name = name;
+      input.addEventListener("input", calculateHelperFunction);
+
+      const container = document.createElement("div");
+      container.appendChild(input);
+      container.appendChild(document.createElement("br"));
+
+      return container.innerHTML;
     }
   };
 
@@ -248,41 +275,3 @@ function toggleInputContainer(label) {
 }
 
 highlightActiveLink();
-
-// Call the function to create the form and attach event listeners when the content is loaded
-document.addEventListener("DOMContentLoaded", function () {
-  const visualizationBox = document.getElementById("visualization-box");
-  visualizationBox.innerHTML = letfBacktest();
-
-  // Attach event listeners to start date and end date inputs
-  const startDateInput = document.querySelector('input[name="start_date"]');
-  const endDateInput = document.querySelector('input[name="end_date"]');
-  const dailyLeverageInput = document.querySelector(
-    'input[name="daily_leverage"]'
-  );
-  const adjustedVolatilityInput = document.querySelector(
-    'input[name="adjusted_volatility"]'
-  );
-  startDateInput.addEventListener("input", function () {
-    calculateAndUpdatePeriodLength();
-    calculatePeriodCAGR();
-    calculatePeriodVolatility();
-    calculateTreasuryAverage();
-    calculateAdjustedPeriodCAGR();
-    calculateAdjustedPeriodVolatility();
-    calculateAdjustedTreasuryAverage();
-    calculateLETFCAGR();
-  });
-  endDateInput.addEventListener("input", function () {
-    calculateAndUpdatePeriodLength();
-    calculatePeriodCAGR();
-    calculatePeriodVolatility();
-    calculateTreasuryAverage();
-    calculateAdjustedPeriodCAGR();
-    calculateAdjustedPeriodVolatility();
-    calculateAdjustedTreasuryAverage();
-    calculateLETFCAGR();
-  });
-  dailyLeverageInput.addEventListener("input", calculateLETFVolatility);
-  adjustedVolatilityInput.addEventListener("input", calculateLETFVolatility);
-});
