@@ -332,7 +332,7 @@ function calculateChartData() {
 
   const query = `SELECT Dates, "1x port", "leveraged port" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
   const query2 = `SELECT Dates, "1x port", "leveraged port" FROM Data WHERE Dates <= '${formatDate(startDate)}' ORDER BY Dates DESC LIMIT 1`;
-
+  //test
 
   fetchDataFromDatabase("sql/letf_backtest.db", query)
     .then((result) => {
