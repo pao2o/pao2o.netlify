@@ -116,6 +116,7 @@ function letfBacktest() {
       input.addEventListener("input", calculateAdjustedTreasuryAverage);
       input.addEventListener("input", calculateLETFCAGR);
       input.addEventListener("input", calculateHelperFunction);
+      input.addEventListener("input", calculateChartData)
 
       // Format the date value as yyyy-mm-dd
       const formattedValue = input.valueAsDate.toISOString().split("T")[0];

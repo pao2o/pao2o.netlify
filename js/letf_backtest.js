@@ -14,6 +14,7 @@ function attachLETFBacktestEventListeners() {
     calculateAdjustedTreasuryAverage();
     calculateLETFCAGR();
     calculateHelperFunction();
+    calculateChartData();
   });
   endDateInput.addEventListener("input", function () {
     calculateAndUpdatePeriodLength();
@@ -25,6 +26,7 @@ function attachLETFBacktestEventListeners() {
     calculateAdjustedTreasuryAverage();
     calculateLETFCAGR();
     calculateHelperFunction();
+    calculateChartData();
   });
   dailyLeverageInput.addEventListener("input", calculateLETFVolatility);
   adjustedVolatilityInput.addEventListener("input", calculateLETFVolatility);
@@ -290,7 +292,14 @@ function calculateHelperFunction() {
   const endDate = new Date(endDateInput.value + "T00:00:00Z");
 
   const query = `SELECT "return squared", "return cubed", "return power 4", "return power 5" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
-  
+  const query2 = `
+  SELECT "return squared", "return cubed", "return power 4", "return power 5"
+  FROM Data
+  WHERE Dates <= '${formatDate(startDate)}'
+  ORDER BY Dates DESC
+  LIMIT 1
+`;
+
   fetchDataFromDatabase("sql/letf_backtest.db", query)
     .then((result) => {
       // Process the query result
@@ -314,6 +323,30 @@ function calculateHelperFunction() {
     });
 }
 
+function calculateChartData() {
+  const startDateInput = document.querySelector('input[name="start_date"]');
+  const endDateInput = document.querySelector('input[name="end_date"]');
+
+  const startDate = new Date(startDateInput.value + "T00:00:00Z");
+  const endDate = new Date(endDateInput.value + "T00:00:00Z");
+
+  const query = `SELECT Dates, "1x port", "leveraged port" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
+
+  fetchDataFromDatabase("sql/letf_backtest.db", query)
+    .then((result) => {
+      // Process the query result
+      const values1 = result.map((row) => row[0]);
+      const values2 = result.map((row) => row[1]);
+      const values3 = result.map((row) => row[2]);
+
+      const spyData = calculateAverage(values2);
+      const leveragedSpyData = calculateAverage(values3);
+      return
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
 
 
 
