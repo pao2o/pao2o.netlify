@@ -135,7 +135,21 @@ function letfBacktest() {
       container.appendChild(document.createElement("br"));
 
       return container.innerHTML;
-    } else if (label === "Daily Leverage") {
+    } else if (label === "Period length") {
+      const input = document.createElement("input");
+      input.type = "number";
+      input.name = name;
+    
+      const labelElement = document.createElement("label");
+      labelElement.textContent = label;
+    
+      const container = document.createElement("div");
+      container.appendChild(labelElement);
+      container.appendChild(input);
+      container.appendChild(document.createElement("br"));
+    
+      return container.innerHTML;
+    }else if (label === "Daily Leverage") {
       const defaultValue = "3";
       const input = document.createElement("input");
       input.type = "number";

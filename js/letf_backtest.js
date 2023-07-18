@@ -332,18 +332,30 @@ function calculateChartData() {
 
   const query = `SELECT Dates, "1x port", "leveraged port" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
   const query2 = `SELECT Dates, "1x port", "leveraged port" FROM Data WHERE Dates <= '${formatDate(startDate)}' ORDER BY Dates DESC LIMIT 1`;
-  //test
 
   fetchDataFromDatabase("sql/letf_backtest.db", query)
     .then((result) => {
       // Process the query result
-      const values1 = result.map((row) => row[0]);
-      const values2 = result.map((row) => row[1]);
-      const values3 = result.map((row) => row[2]);
+      const chartDates = result.map((row) => row[0]);
+      const spyData = result.map((row) => row[1]);
+      const leveragedSpyData = result.map((row) => row[2]);
 
-      const spyData = calculateAverage(values2);
-      const leveragedSpyData = calculateAverage(values3);
-      return
+      fetchDataFromDatabase("sql/letf_backtest.db", query2)
+        .then((result) => {
+          // Process the query result
+          const spyFactor = result.map((row) => row[1]);
+          const leveragedSpyFactor = result.map((row) => row[2]);
+
+          const returnSpyData = spyData.map((element) => element/spyFactor);
+          const returnLeveragedSpyList = leveragedSpyData.map((element) => element/leveragedSpyFactor);
+
+          console.log(chartDates)
+          console.log(returnSpyData);
+          console.log(returnLeveragedSpyList);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
