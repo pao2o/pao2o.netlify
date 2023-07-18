@@ -56,7 +56,6 @@
 .input-group .input-container {
   display: inline-flex;
   flex-direction: column;
-  width: 100%;
 }
 
 
@@ -122,5 +121,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: var(--secondary-color);
 }
 
+.container {
+  display: flex;
+}
+
+#chartContainer {
+  display: flex;
+  flex: 1;
+}
 
 

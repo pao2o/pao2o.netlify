@@ -10,19 +10,18 @@ function handleSectionClick(event) {
   var content;
   if (href === "#letf-backtest") {
     content = letfBacktest();
-    
-    // Add the content to the visualization box
-    visualizationBox.innerHTML = `
-      <div>
-        ${content}
-      </div>
-    `;
+
+    // Clear the visualization box
+    visualizationBox.innerHTML = "";
+
+    // Append the content container to the visualization box
+    visualizationBox.appendChild(content);
 
     // Call the function to attach event listeners and perform calculations when the content is loaded
     attachLETFBacktestEventListeners();
   } else if (href === "#jaro-winkler") {
     content = "<h2>Jaro-Winkler</h2>";
-    
+
     // Add the content to the visualization box
     visualizationBox.innerHTML = `
       <div>
@@ -31,7 +30,7 @@ function handleSectionClick(event) {
     `;
   } else {
     content = "<h2>Unknown section</h2>";
-    
+
     // Add the content to the visualization box
     visualizationBox.innerHTML = `
       <div>
@@ -40,6 +39,7 @@ function handleSectionClick(event) {
     `;
   }
 }
+
 
 
 
@@ -246,8 +246,9 @@ function letfBacktest() {
       .map((group) => createFormGroup(group.title, group.labels))
       .join("");
 
-    return `
-        <h2>LETF Backtest</h2>
+    const formContent = `
+      <h2>LETF Backtest</h2>
+      <div class="container">
         <div class="input-container">
           <div class="left-inputs">
             ${leftGroups}
@@ -256,11 +257,46 @@ function letfBacktest() {
             ${rightGroups}
           </div>
         </div>
+        <div class="chart-container" style="display: flex;">
+          <canvas id="chartContainer"></canvas>
+        </div>
+      </div>
     `;
+
+    const container = document.createElement("div");
+    container.innerHTML = formContent;
+
+    setTimeout(() => {
+      const chartContainer = container.querySelector("#chartContainer");
+
+      const ctx = chartContainer.getContext("2d");
+      const chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+          datasets: [
+            {
+              label: "Sample Data",
+              data: [10, 20, 30, 25, 40],
+              backgroundColor: "rgba(0, 123, 255, 0.5)",
+              borderColor: "rgba(0, 123, 255, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+    }, 10); // Add a small delay before initializing the chart (e.g., 10 milliseconds)
+
+    return container; // Return the container element
   };
 
   return createFormContent();
 }
+
 
 //HELPER FUNCTIONS//
 
