@@ -349,6 +349,7 @@ function calculateChartData() {
           const returnSpyData = spyData.map((element) => element/spyFactor);
           const returnLeveragedSpyList = leveragedSpyData.map((element) => element/leveragedSpyFactor);
 
+          updateChartData(chartDates, returnSpyData, returnLeveragedSpyList);
           console.log(chartDates)
           console.log(returnSpyData);
           console.log(returnLeveragedSpyList);
@@ -360,7 +361,61 @@ function calculateChartData() {
     .catch((error) => {
       console.error("Error fetching data:", error);
     });
+    
 }
+
+let chartInstance; // Maintain a reference to the chart instance
+
+function updateChartData(chartDates, spyData, leveragedSpyData) {
+  const chartContainer = document.querySelector("#chartContainer");
+  const ctx = chartContainer.getContext("2d");
+
+  if (chartInstance) {
+    // Update the existing chart with new data
+    chartInstance.data.labels = chartDates;
+    chartInstance.data.datasets[0].data = spyData;
+    chartInstance.data.datasets[1].data = leveragedSpyData;
+    chartInstance.update();
+  } else {
+    // Create a new chart instance if it doesn't exist
+    chartInstance = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: chartDates,
+        datasets: [
+          {
+            label: "SPY",
+            data: spyData,
+            backgroundColor: "rgba(0, 123, 255, 0.5)",
+            borderColor: "rgba(0, 123, 255, 1)",
+            borderWidth: 1,
+          },
+          {
+            label: "Leveraged SPY",
+            data: leveragedSpyData,
+            backgroundColor: "rgba(204, 102, 0, 0.5)",
+            borderColor: "rgba(204, 102, 0, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        normalized: true,
+        elements: {
+          point: {
+            radius: 0 // default to disabled in all datasets
+          }
+        }
+      },
+    });
+  }
+}
+
+
+
+
 
 
 

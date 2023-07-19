@@ -257,7 +257,7 @@ function letfBacktest() {
             ${rightGroups}
           </div>
         </div>
-        <div class="chart-container" style="display: flex;">
+        <div class="chart-container">
           <canvas id="chartContainer"></canvas>
         </div>
       </div>
@@ -266,30 +266,6 @@ function letfBacktest() {
     const container = document.createElement("div");
     container.innerHTML = formContent;
 
-    setTimeout(() => {
-      const chartContainer = container.querySelector("#chartContainer");
-
-      const ctx = chartContainer.getContext("2d");
-      const chart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-          datasets: [
-            {
-              label: "Sample Data",
-              data: [10, 20, 30, 25, 40],
-              backgroundColor: "rgba(0, 123, 255, 0.5)",
-              borderColor: "rgba(0, 123, 255, 1)",
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-        },
-      });
-    }, 10); // Add a small delay before initializing the chart (e.g., 10 milliseconds)
 
     return container; // Return the container element
   };
