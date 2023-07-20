@@ -389,6 +389,7 @@ function updateChartData(chartDates, spyData, leveragedSpyData) {
             backgroundColor: "rgba(0, 123, 255, 0.5)",
             borderColor: "rgba(0, 123, 255, 1)",
             borderWidth: 1,
+            fill: true,
           },
           {
             label: "Leveraged SPY",
@@ -396,6 +397,7 @@ function updateChartData(chartDates, spyData, leveragedSpyData) {
             backgroundColor: "rgba(204, 102, 0, 0.5)",
             borderColor: "rgba(204, 102, 0, 1)",
             borderWidth: 1,
+            fill: true,
           },
         ],
       },
@@ -407,7 +409,36 @@ function updateChartData(chartDates, spyData, leveragedSpyData) {
           point: {
             radius: 0 // default to disabled in all datasets
           }
-        }
+        },
+        scales: {
+          y: {
+            type: 'logarithmic', // Set y-axis scale to logarithmic
+            beginAtZero: false, // Include zero as a tick
+            ticks: {
+              callback: function (value, index, values) {
+                return Number(value.toString()); // Return the logarithmic value as a number
+              }
+            }
+          },
+        },
+        plugins: {
+          zoom: {
+            zoom: {
+              wheel: {
+                enabled: true,
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: "x",
+            },
+            pan: {
+              enabled: true,
+              mode: "x",
+            },
+          },
+        },
+        
       },
     });
   }

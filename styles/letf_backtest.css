@@ -128,6 +128,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .chart-container {
   display: flex;
   flex: 1;
+  overflow: auto;
 }
+
+
 
 
