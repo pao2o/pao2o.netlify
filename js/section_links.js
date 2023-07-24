@@ -107,16 +107,8 @@ function letfBacktest() {
       input.name = name;
       input.valueAsDate = new Date(defaultValue);
       input.classList.add(name);
-      input.addEventListener("input", calculateAndUpdatePeriodLength);
-      input.addEventListener("input", calculatePeriodCAGR);
-      input.addEventListener("input", calculatePeriodVolatility);
-      input.addEventListener("input", calculateTreasuryAverage);
-      input.addEventListener("input", calculateAdjustedPeriodCAGR);
-      input.addEventListener("input", calculateAdjustedPeriodVolatility);
-      input.addEventListener("input", calculateAdjustedTreasuryAverage);
-      input.addEventListener("input", calculateLETFCAGR);
-      input.addEventListener("input", calculateHelperFunction);
-      input.addEventListener("input", calculateChartData)
+      input.addEventListener("input", queryData);
+      input.addEventListener("input", calculateChartData);
 
       // Format the date value as yyyy-mm-dd
       const formattedValue = input.valueAsDate.toISOString().split("T")[0];
@@ -201,7 +193,7 @@ function letfBacktest() {
       const input = document.createElement("input");
       input.type = "text";
       input.name = name;
-      input.addEventListener("input", calculateHelperFunction);
+
 
       const container = document.createElement("div");
       container.appendChild(input);

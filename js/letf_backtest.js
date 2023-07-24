@@ -5,27 +5,11 @@ function attachLETFBacktestEventListeners() {
   const dailyLeverageInput = document.querySelector('input[name="daily_leverage"]');
   const adjustedVolatilityInput = document.querySelector('input[name="adjusted_volatility"]');
   startDateInput.addEventListener("input", function () {
-    calculateAndUpdatePeriodLength();
-    calculatePeriodCAGR();
-    calculatePeriodVolatility();
-    calculateTreasuryAverage();
-    calculateAdjustedPeriodCAGR();
-    calculateAdjustedPeriodVolatility();
-    calculateAdjustedTreasuryAverage();
-    calculateLETFCAGR();
-    calculateHelperFunction();
+    queryData();
     calculateChartData();
   });
   endDateInput.addEventListener("input", function () {
-    calculateAndUpdatePeriodLength();
-    calculatePeriodCAGR();
-    calculatePeriodVolatility();
-    calculateTreasuryAverage();
-    calculateAdjustedPeriodCAGR();
-    calculateAdjustedPeriodVolatility();
-    calculateAdjustedTreasuryAverage();
-    calculateLETFCAGR();
-    calculateHelperFunction();
+    queryData();
     calculateChartData();
   });
   dailyLeverageInput.addEventListener("input", calculateLETFVolatility);
@@ -63,35 +47,55 @@ function fetchDataFromDatabase(databasePath, query) {
   });
 }
 
-function calculateAndUpdatePeriodLength() {
+function queryData(){
   const startDateInput = document.querySelector('input[name="start_date"]');
   const endDateInput = document.querySelector('input[name="end_date"]');
-  const periodLengthInput = document.querySelector(
-    'input[name="period_length"]'
-  );
 
   const startDate = new Date(startDateInput.value + "T00:00:00Z");
   const endDate = new Date(endDateInput.value + "T00:00:00Z");
+
+  const query = `SELECT Dates, "SPX (with div)", "3M Treasury" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
+
+  fetchDataFromDatabase("sql/letf_backtest.db", query)
+    .then((result) => {
+      // Process the query result
+      const dates = result.map((row) => row[0]);
+      const spx = result.map((row) => row[1]);
+      const treasury3M = result.map((row) => row[2]);
+
+      const periodLength = calculateAndUpdatePeriodLength(startDate, endDate);
+      calculatePeriodCAGR(startDate, endDate, periodLength);
+      calculatePeriodVolatility(startDate, endDate);
+      calculateTreasuryAverage(startDate, endDate);
+      calculateAdjustedPeriodCAGR(startDate, endDate, periodLength);
+      calculateAdjustedPeriodVolatility(startDate, endDate);
+      calculateAdjustedTreasuryAverage(startDate, endDate);
+      calculateLETFCAGR(startDate, endDate, periodLength);
+      calculateHelperFunction(startDate, endDate);
+
+
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
+
+function calculateAndUpdatePeriodLength(startDate, endDate) {
+  const periodLengthInput = document.querySelector(
+    'input[name="period_length"]'
+  );
 
   const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
   const daysDifference = Math.floor((endDate - startDate) / millisecondsPerDay);
   const monthsDifference = daysDifference / 365.25; // Assuming each month has 30 days
-
-  periodLengthInput.value = monthsDifference.toFixed(2);
+  
+  const returnValue = monthsDifference.toFixed(2);
+  periodLengthInput.value = returnValue;
+  return returnValue;
 }
 
-function calculatePeriodCAGR() {
-  const startDateInput = document.querySelector('input[name="start_date"]');
-  const endDateInput = document.querySelector('input[name="end_date"]');
-  const periodLengthInput = document.querySelector(
-    'input[name="period_length"]'
-  );
+function calculatePeriodCAGR(startDate, endDate, periodLength) {
   const periodCAGRInput = document.querySelector('input[name="period_cagr"]');
-
-  const startDate = new Date(startDateInput.value + "T00:00:00Z");
-  const endDate = new Date(endDateInput.value + "T00:00:00Z");
-  const periodLength = parseFloat(periodLengthInput.value);
-
   const query = `SELECT "1+daily return" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
 
   fetchDataFromDatabase("sql/letf_backtest.db", query)
@@ -110,14 +114,8 @@ function calculatePeriodCAGR() {
     });
 }
 
-function calculatePeriodVolatility() {
-  const startDateInput = document.querySelector('input[name="start_date"]');
-  const endDateInput = document.querySelector('input[name="end_date"]');
+function calculatePeriodVolatility(startDate, endDate) {
   const periodVolatilityInput = document.querySelector('input[name="period_volatility"]');
-
-  const startDate = new Date(startDateInput.value + "T00:00:00Z");
-  const endDate = new Date(endDateInput.value + "T00:00:00Z");
-
   const query = `SELECT "daily return" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
 
   fetchDataFromDatabase("sql/letf_backtest.db", query)
@@ -134,14 +132,8 @@ function calculatePeriodVolatility() {
     });
 }
 
-function calculateTreasuryAverage() {
-    const startDateInput = document.querySelector('input[name="start_date"]');
-    const endDateInput = document.querySelector('input[name="end_date"]');
-    const treasuryAvgInput = document.querySelector('input[name="3m_treasury_avg"]');
-  
-    const startDate = new Date(startDateInput.value + "T00:00:00Z");
-    const endDate = new Date(endDateInput.value + "T00:00:00Z");
-  
+function calculateTreasuryAverage(startDate, endDate) {
+    const treasuryAvgInput = document.querySelector('input[name="3m_treasury_avg"]'); 
     const query = `SELECT "3M Treasury" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
   
     fetchDataFromDatabase("sql/letf_backtest.db", query)
@@ -158,16 +150,8 @@ function calculateTreasuryAverage() {
     });
 }
 
-function calculateAdjustedPeriodCAGR() {
-    const startDateInput = document.querySelector('input[name="start_date"]');
-    const endDateInput = document.querySelector('input[name="end_date"]');
-    const periodLengthInput = document.querySelector('input[name="period_length"]');
+function calculateAdjustedPeriodCAGR(startDate, endDate, periodLength) {
     const periodCAGRInput = document.querySelector('input[name="adjusted_cagr"]');
-  
-    const startDate = new Date(startDateInput.value + "T00:00:00Z");
-    const endDate = new Date(endDateInput.value + "T00:00:00Z");
-    const periodLength = parseFloat(periodLengthInput.value);
-  
     const query = `SELECT "1+adj daily return" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
   
     fetchDataFromDatabase("sql/letf_backtest.db", query)
@@ -187,13 +171,9 @@ function calculateAdjustedPeriodCAGR() {
   }
 
 
-  function calculateAdjustedPeriodVolatility() {
-    const startDateInput = document.querySelector('input[name="start_date"]');
-    const endDateInput = document.querySelector('input[name="end_date"]');
+  function calculateAdjustedPeriodVolatility(startDate, endDate) {
     const adjustedVolatilityInput = document.querySelector('input[name="adjusted_volatility"]');
   
-    const startDate = new Date(startDateInput.value + "T00:00:00Z");
-    const endDate = new Date(endDateInput.value + "T00:00:00Z");
   
     const query = `SELECT "adj daily return" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
   
@@ -212,14 +192,8 @@ function calculateAdjustedPeriodCAGR() {
       });
   }
   
-  function calculateAdjustedTreasuryAverage() {
-    const startDateInput = document.querySelector('input[name="start_date"]');
-    const endDateInput = document.querySelector('input[name="end_date"]');
+  function calculateAdjustedTreasuryAverage(startDate, endDate) {
     const adjustedTreasuryAvgInput = document.querySelector('input[name="adjusted_3m_treasury_avg"]');
-  
-    const startDate = new Date(startDateInput.value + "T00:00:00Z");
-    const endDate = new Date(endDateInput.value + "T00:00:00Z");
-  
     const query = `SELECT "adj 3M Treasury" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
   
     fetchDataFromDatabase("sql/letf_backtest.db", query)
@@ -236,16 +210,8 @@ function calculateAdjustedPeriodCAGR() {
     });
 }
 
-function calculateLETFCAGR() {
-    const startDateInput = document.querySelector('input[name="start_date"]');
-    const endDateInput = document.querySelector('input[name="end_date"]');
-    const periodLengthInput = document.querySelector('input[name="period_length"]');
-    const letfCAGRInput = document.querySelector('input[name="letf_cagr"]');
-  
-    const startDate = new Date(startDateInput.value + "T00:00:00Z");
-    const endDate = new Date(endDateInput.value + "T00:00:00Z");
-    const periodLength = parseFloat(periodLengthInput.value);
-  
+function calculateLETFCAGR(startDate, endDate, periodLength) {
+    const letfCAGRInput = document.querySelector('input[name="letf_cagr"]');  
     const query = `SELECT "1+leveraged daily return" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
   
     fetchDataFromDatabase("sql/letf_backtest.db", query)
@@ -269,8 +235,6 @@ function calculateLETFVolatility(adjustedVolatility){
     console.log("test");
     const dailyLeverageInput = document.querySelector('input[name="daily_leverage"]');
     const letfVolatilityInput = document.querySelector('input[name="letf_volatility"]');
-
-
     try{
         letfVolatilityInput.value = (dailyLeverageInput.value * adjustedVolatility).toFixed(2);
     }
@@ -280,25 +244,13 @@ function calculateLETFVolatility(adjustedVolatility){
 
 }
 
-function calculateHelperFunction() {
-  const startDateInput = document.querySelector('input[name="start_date"]');
-  const endDateInput = document.querySelector('input[name="end_date"]');
+function calculateHelperFunction(startDate, endDate) {
   const helper1Input = document.querySelector('input[name="helper1"]');
   const helper2Input = document.querySelector('input[name="helper2"]');
   const helper3Input = document.querySelector('input[name="helper3"]');
   const helper4Input = document.querySelector('input[name="helper4"]');
 
-  const startDate = new Date(startDateInput.value + "T00:00:00Z");
-  const endDate = new Date(endDateInput.value + "T00:00:00Z");
-
   const query = `SELECT "return squared", "return cubed", "return power 4", "return power 5" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
-  const query2 = `
-  SELECT "return squared", "return cubed", "return power 4", "return power 5"
-  FROM Data
-  WHERE Dates <= '${formatDate(startDate)}'
-  ORDER BY Dates DESC
-  LIMIT 1
-`;
 
   fetchDataFromDatabase("sql/letf_backtest.db", query)
     .then((result) => {
