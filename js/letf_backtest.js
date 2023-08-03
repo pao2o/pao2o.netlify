@@ -52,9 +52,18 @@ function queryData(){
   const endDateInput = document.querySelector('input[name="end_date"]');
 
   const startDate = new Date(startDateInput.value + "T00:00:00Z");
+  startDate.setDate(startDate.getDate() - 1);
   const endDate = new Date(endDateInput.value + "T00:00:00Z");
 
-  const query = `SELECT Dates, "SPX (with div)", "3M Treasury" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
+  //const query = `SELECT Dates, "SPX (with div)", "3M Treasury" FROM Data WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'`;
+  const query = `
+  SELECT
+    *
+  FROM letf_backtest_data
+  WHERE Dates BETWEEN '${formatDate(startDate)}' AND '${formatDate(endDate)}'
+`;
+
+
 
   fetchDataFromDatabase("sql/letf_backtest.db", query)
     .then((result) => {
@@ -62,6 +71,15 @@ function queryData(){
       const dates = result.map((row) => row[0]);
       const spx = result.map((row) => row[1]);
       const treasury3M = result.map((row) => row[2]);
+      const dailyReturn = result.map((row) => row[3]);
+
+      //
+
+
+
+
+
+      // Update the input cells
 
       const periodLength = calculateAndUpdatePeriodLength(startDate, endDate);
       calculatePeriodCAGR(startDate, endDate, periodLength);
@@ -316,6 +334,8 @@ function calculateChartData() {
     
 }
 
+
+
 let chartInstance; // Maintain a reference to the chart instance
 
 function updateChartData(chartDates, spyData, leveragedSpyData) {
@@ -398,12 +418,8 @@ function updateChartData(chartDates, spyData, leveragedSpyData) {
 
 
 
-
-
-
-
-
 /*HELPER FUNCTIONS*/
+
 //format date in 'yyyy-MM-dd' format
 function formatDate(date) {
     const year = date.getUTCFullYear();
@@ -424,4 +440,36 @@ function standardDeviation(values) {
 function calculateAverage(values) {
   const sum = values.reduce((acc, val) => acc + val, 0);
   return sum / values.length;
+}
+
+function calculateDailyReturn(arr) {
+  const result = [];
+  for (let i = 1; i < arr.length; i++) {
+    result.push((arr[i] / arr[i - 1]) - 1);
+  }
+  return result;
+}
+
+function calculateAdjustedDailyReturn(){
+  // Input cell references
+  var F4 = Main.F4;
+  var B8 = Main.B8;
+  var C8 = Main.C8;
+  var J4 = Main.J4;
+  var J5 = Main.J5;
+  var J6 = Main.J6;
+  var J7 = Main.J7;
+
+  // Intermediate calculations
+  var term1 = Math.log(1 + F4 + B8);
+  var term2 = C8 * Math.log(1 + F4);
+  var term3 = 0.5 * (C8 ** 2 - C8) * J4;
+  var term4 = (1 / 3) * (C8 - C8 ** 3) * J5;
+  var term5 = 0.25 * (C8 ** 4 - C8) * J6;
+  var term6 = (1 / 5) * (C8 - C8 ** 5) * J7;
+
+  // Final result
+  var result = (term1 - term2 + term3 + term4 + term5 + term6) / 252;
+
+  return result;
 }

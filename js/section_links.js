@@ -101,7 +101,7 @@ function letfBacktest() {
     ];
 
     if (label === "Start Date" || label === "End Date") {
-      const defaultValue = label === "Start Date" ? "1960-01-01" : "2023-04-12";
+      const defaultValue = label === "Start Date" ? "1928-01-03" : "2023-04-12";
       const input = document.createElement("input");
       input.type = "date";
       input.name = name;
