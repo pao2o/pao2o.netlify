@@ -168,13 +168,13 @@ function letfBacktest() {
         </div><br>
       `;
     } else if (label === "Add to CAGR" || label === "Add to 3M Treasury") {
-      const defaultValue = "0.00";
+      const defaultValue = 0.00;
       return `
         <label>${label}:</label>
         <div class="percentage-input">
-          <input type="text" name="${name}" value="${defaultValue}"><span class="percentage-symbol">%</span>
+          <input type="number" name="${name}" value="${defaultValue.toFixed(2)}"><span class="percentage-symbol">%</span>
         </div><br>
-      `;
+      `;      
     } else if (label === "Adjusted vol / Actual vol") {
       const defaultValue = "1";
       return `
