@@ -1,18 +1,24 @@
 function attachLETFBacktestEventListeners() {
-  // Attach event listeners to start date and end date inputs
-  const startDateInput = document.querySelector('input[name="start_date"]');
-  const endDateInput = document.querySelector('input[name="end_date"]');
-  const dailyLeverageInput = document.querySelector('input[name="daily_leverage"]');
-  const adjustedVolatilityInput = document.querySelector('input[name="adjusted_volatility"]');
-  startDateInput.addEventListener("input", function () {
+  const inputNames = [
+    "start_date",
+    "end_date",
+    "daily_leverage",
+    "add_to_cagr",
+    "adjusted_vol_/_actual_vol",
+    "add_to_3m_treasury",
+    "letf_expense_ratio"
+  ];
+
+  const queryDataHandler = () => {
     queryData();
+  };
+
+  inputNames.forEach(inputName => {
+    const input = document.querySelector(`input[name="${inputName}"]`);
+    input.addEventListener("input", queryDataHandler);
   });
-  endDateInput.addEventListener("input", function () {
-    queryData();
-  });
-  dailyLeverageInput.addEventListener("input", calculateLETFVolatility);
-  adjustedVolatilityInput.addEventListener("input", calculateLETFVolatility);
 }
+
 
 
 function fetchDataFromDatabase(databasePath, query) {
@@ -110,7 +116,7 @@ function queryData() {
       calculateAdjustedPeriodVolatility(adjDailyReturn);
       calculateAdjustedTreasuryAverage(adj3MTreasury);
       calculateLETFCAGR(leveragedDailyReturnsPlus1, periodLength);
-      calculateChartData(dates, port1X, portLeveraged);
+      calculateChartData(dates.slice(1), port1X, portLeveraged);
       
 
 
